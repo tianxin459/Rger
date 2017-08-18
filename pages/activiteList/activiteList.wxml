@@ -1,0 +1,62 @@
+<!--pages/activiteList/activiteList.wxml-->
+<!-- <text>pages/activiteList/activiteList.wxml</text> {{activites}} -->
+<view class="" wx:if="{{loading}}">
+  <view class="loading-container">
+    <image class="center" src="../../resources/loading1.gif"></image>
+
+  </view>
+</view>
+<view class="page" hidden="{{loading}}">
+  <view class="pg__hd logo-title" bindtap="addActivite">
+    <image class="logo" src="../../resources/logo.png"></image>
+    <view class="pg__title">
+      <view class="text-h1">一起<text class="green">哦</text></view>
+      <view class="">你可以发起活动并分享给好友</view>
+    </view>
+    <!-- <text class="pg__title">{{msg}}</text> -->
+  </view>
+  <view class="pg__bd page__bd_spacing">
+    <view class="weui-cells">
+      <view class="weui-cell line" wx:for="{{activites}}" wx:for-item="a" wx:key="*this" bindtap="join" data-id="{{a.RowKey}}">
+        <image class="creator" wx:if="{{a.Creator==userInfo.nickName}}" src="../../resources/user1.png"></image>
+        <view class="weui-cell__bd">
+          <view class="text-h2">{{a.title}} </view>
+          <view class="text-remark">{{a.date}} {{a.time}}</view>
+          <view class="text-remark"><text class="text-h2">参加人数:{{a.userNumber||'0'}}</text></view>
+          <!-- <view class="weui-article__p">{{JSON.prase("{}")}}</view> -->
+        </view>
+        <!-- <view class="weui-cell__ft">
+          <button bindtap="addActivite" type="primary" hidden="{{!(userInfo.nickName==a.Creator)}}">编辑</button>
+        </view> -->
+      </view>
+    </view>
+    <view class="">
+      <!-- <view class="listGroup text-h2" hidden="{{!showHistory}}" bindtap="toggleHistory" >
+        历史<text class="green">活动</text>  
+      </view>  -->
+      <view class="listDown text-h2" bindtap="toggleHistory">
+        <!-- <view class="hr"></view> -->
+        <view class="listDown-text">历史活动</view>
+      </view>
+      <view class="listDown-mask" wx:if="{{!showHistory}}">
+      </view>
+      <view class="weui-cell line listPast {{showHistory?'showHistory':''}}" wx:for="{{activitesPast}}" wx:for-item="a" wx:key="*this" bindtap="join" data-id="{{a.RowKey}}">
+        <image class="creator" wx:if="{{a.Creator==userInfo.nickName}}" src="../../resources/user1.png"></image>
+        <view class="weui-cell__bd">
+          <view class="text-h2">{{a.title}} </view>
+          <view class="text-remark">{{a.date}} {{a.time}}</view>
+          <view class="text-remark"><text class="text-h2">参加人数:{{a.userNumber||'0'}}</text></view>
+          <!-- <view class="weui-article__p">{{JSON.prase("{}")}}</view> -->
+        </view>
+        <!-- <view class="weui-cell__ft">
+          <button bindtap="addActivite" type="primary" hidden="{{!(userInfo.nickName==a.Creator)}}">编辑</button>
+        </view> -->
+      </view>
+    </view>
+  </view>
+  <view class="block-footer">
+    <view class="weui-btn-area">
+      <button bindtap="addActivite" type="primary">发起活动</button>
+    </view>
+  </view>
+</view>

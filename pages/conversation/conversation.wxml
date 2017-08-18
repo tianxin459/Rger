@@ -1,0 +1,21 @@
+<!--pages/conversation/conversation.wxml-->
+<text>pages/conversation/conversation.wxml</text>
+<view class="conversation">
+  <view class="record" wx:for="{{messageList}}" wx:for-item="c" wx:key="*this">
+    [{{c.creator}}]:{{c.message}}
+  </view>
+</view>
+<!-- <view class="weui-cell">
+  <view class="weui-cell__bd">
+    <textarea name="content" class="weui-textarea" maxlength="200" value="{{content}}" bind placeholder="输入内容……"></textarea>
+  </view>
+</view> -->
+<view class="pg__ft float-footer">
+  <view class="weui-btn-area">
+    <form bindsubmit="addMessage">
+      <textarea name="message" class="weui-textarea" maxlength="200" placeholder="输入内容……"></textarea>
+      <button id="btnSubmit" form-type="submit" type="primary">保存</button>
+      <button type="warn" hidden="{{!isUpdateFlag}}" bindtap="deleteActivite">删除</button>
+    </form>
+  </view>
+</view>

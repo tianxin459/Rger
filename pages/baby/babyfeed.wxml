@@ -1,0 +1,23 @@
+<!--pages/baby/babyfeed.wxml-->
+<text>pages/baby/babyfeed.wxml</text>
+<view class="container">
+ <view bindtap="" class="babyinfo {{babyInfo.gender==1?'m':'f'}}">
+    <image class="babyinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
+    <text class="babyinfo-nickname">{{userInfo.nickName}}
+    </text>
+    <!--<icon type="success" />-->
+  </view>
+
+  <view class="overlapButtonGroup">
+    <view class="button">button1</view>
+    <view class="button">button2</view>
+    <view class="button" bindtap="addNote">button3</view>
+  </view>
+</view>
+
+<view class="container-bottom">
+  <view class="btnGroup">
+    <button bindtap="addNote">Note</button>
+    <!--<button bindtap="gotoClick" type="default" plain>Go To Location</button>-->
+  </view>
+</view>

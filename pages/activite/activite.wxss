@@ -1,0 +1,83 @@
+.pg__bd {
+  height: 60vh;
+}
+
+.datetime {
+  /* border: 1px solid gray; */
+  display: flex;
+  justify-content: flex-start;
+}
+
+.datetime picker, 
+.datetime input {
+  margin: 0 5px;
+}
+
+.datetime picker {
+  border-bottom: 1px solid black;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+input[type="digit"] {
+  border-bottom: 1px solid gray;
+}
+
+button {
+  margin-bottom: 5px;
+}
+
+.weui-search-bar {
+  background-color: white;
+}
+
+.weui-search-bar {
+  border: 0px;
+}
+
+/* share */
+
+.arrow {
+  position: absolute;
+  top: -25px;
+  right: 0px;
+  transform: translate(-30vw, 20vh);
+  /* transform: rotate(25deg);  */
+  opacity: 0;
+  margin: 25px 0 0 -25px;
+  z-index: 99;
+}
+
+.arrow image {
+  width: 60px;
+  height: 60px;
+  /* transform: rotate(20deg) translate(20px, -10px); */
+}
+
+.moving {
+  transform: translate(20px, -10px);
+  opacity: 1;
+  transition: transform 1s ease-in;
+  z-index: 100;
+}
+
+.moving image {
+  transform: rotate(20deg);
+  transition: transform 1s ease-in;
+  z-index: 100;
+}
+
+
+.error{
+  border: 2px solid red;
+  /* background-color: #e25819; */
+}
+
+textarea{
+  border: 1px solid azure;
+  box-shadow: 1px 1px 0;
+}

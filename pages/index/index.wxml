@@ -1,0 +1,26 @@
+<!--index.wxml-->
+<view class="container">
+  <view bindtap="bindViewTapFn" class="userinfo {{userInfo.gender==1?'m':'f'}}">
+    <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
+    <text class="userinfo-nickname">{{userInfo.nickName}}
+    </text>
+    <icon type="success" />
+  </view>
+
+  <!--
+  <view class="" wx:for="{{userInfo}}" wx:key="*this">
+    <text>{{index}}:{{item}}</text>
+  </view>-->
+</view>
+<view class="container-bottom">
+  <view class="btnGroup">
+    <!--<button bindtap="signUp">SignUp</button>-->
+    <button bindtap="bindTap1">page1</button>
+    <!--<button bindtap="bindTap2">page2</button>-->
+    <!--<button bindtap="openMap">Open Map</button>-->
+    <button bindtap="gotoClick" type="default" plain>Go To Location</button>
+  </view>
+  <view class="container-float" wx:if="{{showLocation}}" >
+    <button wx:for="{{locations}}" wx:key="*this" wx:for-item="l"  data-latitude="{{l.latitude}}" data-name="{{l.name}}" data-longitude="{{l.longitude}}" bindtap="openMap">{{l.name}}</button>
+  </view>
+</view>

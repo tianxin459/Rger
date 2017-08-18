@@ -1,0 +1,103 @@
+<!--pages/activiteDetail/activiteDetail.wxml-->
+<!-- <text>pages/activiteDetail/activiteDetail.wxml</text>
+<view class="classname">{{userInfo}}</view> -->
+<view class="" wx:if="{{loading}}">
+  <view class="loading-container">
+    <image class="center" src="../../resources/loading1.gif"></image>
+  </view>
+</view>
+<view class="page" wx:else>
+  <view class="help" bindtap="hideHelp" wx:if="{{showHelp}}">
+    <view class="help-share">
+      <image src="../../resources/arrow1.png" class="" />
+      <view class="classname">点击分享活动</view>
+    </view>
+    <view class="help-address">
+      <view class="classname">点击打开地图</view>
+      <image src="../../resources/arrow1.png" class="" />
+    </view>
+    <view class="help-map">
+      <view class="classname">点击打开地图</view>
+      <image src="../../resources/arrow1.png" class="" />
+    </view>
+  </view>
+  <view class="pg__hd">
+    <view class="weui-article__h1">
+      {{activite.title}}
+      <text class="text-expire" wx:if="{{activite.date < dateNow}}">(已过期)
+    </text>
+    </view>
+    <!-- <button class="btn-test" open-type="share">test</button>>  -->
+    <!-- <image class="btn-share" bindtap="onShare" src="../../resources/share1.png"></image>  -->
+  </view>
+
+  <!-- Messageboard -->
+  <view class="messageboard-acting {{openMessageBoard?'openMessageBoard':''}}">
+    <image src="../../resources/close.png" class="btn-close" bindtap="toggleMessageBoard"></image>
+
+    <view class="messageboard-bd">
+      <view class="message-head">{{messageList.length}}条消息</view>
+      <view class="message" wx:for="{{messageList}}" wx:for-item="c" wx:key="*this">
+        [{{c.creator}}]:{{c.message}}
+      </view>
+    </view>
+
+    <view class="messageboard-ft weui-cells">
+      <input name="message" type="text" class="weui-input message-box" bindfocus="focusMessage" bindblur="blurMessage" bindinput="inputMessage" bindconfirm="submitMessage" value="{{message}}" />
+      <view class="btn-send" bindtap="submitMessage">发<text class="green">送</text></view>
+      <!-- <form bindsubmit="addMessage" class="weui-cell">
+         <textarea name="message" class="weui-cell__bd weui-textarea" maxlength="200" placeholder="输入内容……"></textarea> 
+         <button id="btnSubmit" class="weui-cell__ft" form-type="submit" type="primary">发送</button> 
+      </form> -->
+    </view>
+  </view>
+
+  <view class="pg__bd ">
+    <view class="page__bd_spacing">
+      <!-- information -->
+      <view class="weui-article__section weui-media-box weui-media-box_text ">
+        <view class="weui-article__p"><text class="text-h2">时间:</text> {{activite.date}} {{activite.dayOfWeek}} {{activite.time}}</view>
+        <view class="weui-article__p" wx:if="{{activite.duration}}"><text class="text-h2">时长:</text> {{activite.duration}}小时</view>
+        <view class="weui-article__p" hidden="{{!activiteLocation.title}}"><text class="text-h2">地点:</text> {{activiteLocation.title}}</view>
+        <view class="weui-article__p address" hidden="{{!activiteLocation.address}}" bindtap="openMap">{{activiteLocation.address}}
+          <image class="img-icon" src="../../resources/placeholder1.png" background-size="cover"></image>
+        </view>
+        <view class="weui-article__p text-remark">{{activite.content}}</view>
+      </view>
+      <!-- message -->
+      <view class="messageboard" bindtap="toggleMessageBoard">
+        <view class="text-h2 bottomLine">实时留言板:</view>
+        <view class="message-container">
+          <scroll-view scroll-y="true" scroll-into-view="x{{lastMessageRowKey}}">
+            <view id="x{{c.RowKey}}" class="message" wx:for="{{messageList}}" wx:for-item="c" wx:key="*this">
+              [{{c.creator}}]:{{c.message}}
+            </view>
+          </scroll-view>
+        </view>
+      </view>
+
+      <!-- participator -->
+      <view class=""><text class="">参加人数:</text><text class="text-h1">{{userList.length||'0'}}</text></view>
+      <view class="container-item weui-media-box weui-media-box_text">
+        <view class="icon-box__ctn item " wx:for="{{userList}}" wx:for-item="p" wx:key="*this" hover-class="item-hover">
+          <view class="noplace">
+            <image class="avatar-icon-gender" wx:if="{{(p.gender==1)}}" src="../../resources/boy.png"></image>
+            <image class="avatar-icon-gender" wx:elif="{{(p.gender==2)}}" src="../../resources/girl.png"></image>
+          </view>
+          <image class="avatar" src="{{p.avatarUrl}}" background-size="cover"></image>
+          <view class="">{{p.nickName}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <!-- <view class="pg__ft page__bd_spacing ">  -->
+  <view class="pg__ft block-footer" wx:if="{{!(activite.date < dateNow)}}">
+    <view class="weui-btn-area">
+      <!-- <view class="classname">{{userInfo.nickName}}-{{activite.Creator}} -{{userInfo.nickName==activite.Creator}}</view> -->
+      <button bindtap="updateActivite" type="default" hidden="{{!(userInfo.nickName==activite.Creator || isAdmin)}}">更改活动内容</button>
+      <button id="btnSubmit" bindtap="submitActivite"  type="primary" hidden="{{joinAlready}}">加入一起</button>
+      <button id="btnDelete" bindtap="quitActivite" type="warn" hidden="{{!joinAlready}}">退出活动</button>
+    </view>
+  </view>
+  <view class="mask" wx:if="{{activite.date < dateNow}}"></view>
+</view>

@@ -1,0 +1,18 @@
+/* pages/map/map.wxss */
+.container-map
+{
+  border-radius: 5px;
+  border: 1px solid gray;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content:flex-start;
+  margin: 5px;
+  padding:5px;
+  box-sizing: border-box;
+}
+
+.container-map map{
+  width: 100%;
+  height: 300px;
+}

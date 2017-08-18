@@ -1,0 +1,9 @@
+<!--pages/animate/animate.wxml-->
+<!-- <text>pages/animate/animate.wxml</text> -->
+<button class="btn" type="primary" bindtap="onGuide">Start</button>
+<view class="classname">=={{dateNow}}
+</view>
+<view class="arrow {{startGuide?'moving':''}}">
+  <image src="../../resources/arrow1.png" class="" />
+  <view class="classname">点击分享</view>
+</view>

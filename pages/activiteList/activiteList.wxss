@@ -1,0 +1,108 @@
+.line {
+  margin: 5px;
+  /* border: 1px solid red; */
+  border-radius: 5px;
+  /* border-bottom-right-radius: 15px; */
+  border: 0.5px solid gainsboro;
+  background-color: white;
+  padding: 5px;
+}
+
+.line:nth-child(even) {
+  background-color: #ffc;
+}
+
+/* 
+.line:nth-last-child(1) {
+  margin-bottom: 60px;
+} */
+
+.center {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.weui-cells {
+  padding-top: 3px;
+  /* border: 0px; */
+  margin-top: 2px;
+}
+
+.weui-cell::before {
+  border-top: 0px solid white;
+}
+
+.weui-cells::after {
+  border-bottom: 0px solid white;
+}
+
+.listGroup {
+  /* width: 100%; */
+  height: 5vh;
+  background-color: #404d4e;
+  color: white;
+  /* background-color: #e9eaec; */
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.listPast {
+  height: 0px;
+  color: gray;
+  overflow: hidden;
+  opacity: 0;
+  /* display: none; */
+  transition: all 0.2s ease-in;
+}
+
+.listPast .text-remark {
+  color: gray;
+}
+
+.listActive {
+  height: 60vh;
+  transition: all 0.2s ease-in;
+}
+
+.hideActive {
+  height: 15vh;
+  transition: all 0.2s ease-in;
+}
+
+.showHistory {
+  height: 50px;
+  opacity: 1;
+  /* display: block; */
+  transition: all 0.2s ease-in;
+}
+
+.listDown {
+  display: flex;
+  justify-content: center;
+  border-top: 1px solid #4c5b5c;
+  position: relative;
+  top: 1em;
+}
+
+.listDown-text {
+  color: #59696a;
+  position: relative;
+  top: -1.5ex;
+  background: white;
+  text-align: center;
+}
+
+.listDown-mask{
+  background-color: white;
+  /* position: absolute; */
+  width: 100%;
+  height: 50vh;
+}
+
+.creator{
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}

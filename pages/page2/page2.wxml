@@ -1,0 +1,25 @@
+<!--logs.wxml-->
+<view class="">
+  <text>Test</text>
+</view>
+<view class="container-info">
+  <text class="userinfo-nickname">{{userInfo.nickName}}
+  </text>
+</view>
+
+<!--
+  <view class="" wx:for="{{userInfo}}" wx:key="*this">
+    <text>{{index}}:{{item}}</text>
+  </view>-->
+<view class="listContainer{{assignedClass}}">
+  <view class="item{{assignedClass}} {{p.gender==1?'m':'f'}} {{assignedClass}}" wx:for="{{nameList}}" wx:for-item="p" wx:key="*this" hover-class="item-hover{{assignedClass}}">
+    <image class="avatar{{assignedClass}}" src="{{p.avatarUrl}}" background-size="cover"></image>
+    <text>{{p.name}}</text>
+  </view>
+</view>
+<view class="container-bottom">
+  <view class="btnGroup">
+    <button bindtap="Sort" type="primary">Arrange</button>
+    <button bindtap="Quit" wx:if="{{!hideBtnQuit}}" type="warn">Quit</button>
+  </view>
+</view>

@@ -1,0 +1,22 @@
+{
+  "pages":[
+    "pages/activiteList/activiteList",
+    "pages/activiteDetail/activiteDetail",
+    "pages/activite/activite",
+    "pages/error/error",
+    "pages/animate/animate",
+    "pages/conversation/conversation",
+    "pages/baby/babyfeed",
+    "pages/index/index",
+    "pages/logs/logs",
+    "pages/page1/page1",
+    "pages/page2/page2",
+    "pages/map/map"
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "一起哦",
+    "navigationBarTextStyle":"black"
+  }
+}

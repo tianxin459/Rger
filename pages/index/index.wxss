@@ -1,0 +1,56 @@
+/**index.wxss**/
+.userinfo {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 5px;
+  width: 70%;
+  padding: 5px;
+}
+.userinfo icon
+{
+  margin: 20rpx;
+}
+
+
+.userinfo-avatar {
+  width: 128rpx;
+  height: 128rpx;
+  margin: 20rpx;
+  border-radius: 50%;
+}
+
+
+.userinfo-nickname {
+  /*color: #aaa;*/
+  font-family: "Georgia", Tahoma, Sans-Serif;
+  text-transform: capitalize;
+  /*font-size: 12px;*/
+  line-height: 18px;
+}
+
+.usermotto {
+  margin-top: 200px;
+}
+
+.container-float button
+{
+  border-radius: 0px;
+  border:1px solid lightyellow;
+  background-color: lightskyblue;
+  transition: all 1s;
+  height: auto;
+}
+
+.container-float button:first-child {
+  /*width: 90%;*/
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+}
+
+.container-float button:last-child{
+  /*width: 90%;*/
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+}

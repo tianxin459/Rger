@@ -1,0 +1,24 @@
+/* pages/error/error.wxss */
+
+.container-error {
+  align-self: center;
+  margin-top: 100px;
+  margin-bottom: 10px;
+}
+
+.img-error {
+  width: 80px;
+  height: 80px;
+}
+
+.pg__bd {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.error-text {
+  align-content: center;
+  text-align: center;
+  color: red;
+}

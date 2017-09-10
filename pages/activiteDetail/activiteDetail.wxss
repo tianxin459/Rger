@@ -1,11 +1,9 @@
+
 .container-item {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   flex-wrap: wrap;
-  max-height: 150px;
-  overflow: scroll;
-  scroll-behavior: smooth;
 }
 
 .container-item .item {
@@ -15,6 +13,12 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-bottom: 1rem;
+}
+.container-item .nickName{
+  height: 1.5em;
+  overflow-y:  hidden;
+  font-size:  0.9em;
 }
 
 .pg__ft button {
@@ -63,7 +67,7 @@
   transform: translateY(105%);
   transition: transform 0.2s ease-out;
   will-change: auto;
-  overflow: scroll;
+  overflow:  hidden;
 }
 
 .openMessageBoard {
@@ -75,6 +79,7 @@
 .messageboard-acting .messageboard-bd {
   height: 83%;
   padding: 5px;
+  overflow: scroll;
 }
 
 .messageboard-acting .messageboard-ft {

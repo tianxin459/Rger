@@ -1,0 +1,74 @@
+<!--pages/activiteTeam/activiteTeam.wxml-->
+<view class="" wx:if="{{loading}}">
+  <view class="loading-container">
+    <image class="center" src="../../resources/loading1.gif"></image>
+  </view>
+</view>
+<view class="page" hidden="{{loading}}">
+  <view class="pg__hd logo-title">
+    <image class="logo" src="../../resources/logo.png"></image>
+    <view class="pg__title">
+      <view class="text-h1">一起<text class="green">哦</text></view>
+    </view>
+    <!-- <text class="pg__title">{{msg}}</text> -->
+  </view>
+  <view class="pg__bd page__bd_spacing">
+    <view class="team-container">
+      <view class="" bindtap='toggleParticipator'><text class="">参加人数:</text><text class="text-h1">{{userList.length||'0'}}</text></view>
+      <view class="container-item weui-media-box weui-media-box_text {{openParticipator?'openParticipator':'closeParticipator'}}">
+        <view class="icon-box__ctn item " wx:for="{{userList}}" wx:for-item="p" hover-class="item-hover">
+          <view class="noplace">
+            <image class="avatar-icon-gender" wx:if="{{(p.gender==1)}}" src="../../resources/boy.png"></image>
+            <image class="avatar-icon-gender" wx:elif="{{(p.gender==2)}}" src="../../resources/girl.png"></image>
+          </view>
+          <image class="avatar" src="{{p.avatarUrl}}" background-size="cover"></image>
+          <view class="">{{p.nickName}}</view>
+        </view>
+      </view>
+
+      <view class="container-team weui-media-box weui-media-box_text">
+        <block wx:for="{{teamInfo.teamIdle}}" wx:for-item="p" wx:key="nickName">
+          <view class="icon-box__ctn team teamIdle">
+            <!-- <view class="noplace">
+          <image class="avatar-icon-gender" wx:if="{{(p.gender==1)}}" src="../../resources/boy.png"></image>
+          <image class="avatar-icon-gender" wx:elif="{{(p.gender==2)}}" src="../../resources/girl.png"></image>
+        </view> -->
+            <image class="avatar" src="{{p.avatarUrl}}" background-size="cover"></image>
+            <view class="">{{p.nickName}} - {{p.teamNo}}</view>
+          </view>
+        </block>
+      </view>
+
+      <view class="container-team weui-media-box weui-media-box_text">
+        <block wx:for="{{teamInfo.teamArray}}" wx:for-item="team" wx:key="RowKey">
+          <view class="team">
+            <!-- <view class="noline">
+              <view class="team-title">team-{{index+1}}</view>
+            </view> -->
+            <block wx:for="{{team}}" wx:for-item="p" wx:key="RowKey">
+              <view class="icon-box__ctn team-member">
+                <!-- <view class="noplace">
+          <image class="avatar-icon-gender" wx:if="{{(p.gender==1)}}" src="../../resources/boy.png"></image>
+          <image class="avatar-icon-gender" wx:elif="{{(p.gender==2)}}" src="../../resources/girl.png"></image>
+        </view> -->
+                <image class="avatar" src="{{p.avatarUrl}}" background-size="cover"></image>
+                <view class="">{{p.nickName}} - {{p.teamNo}}</view>
+              </view>
+            </block>
+          </view>
+        </block>
+      </view>
+    </view>
+  </view>
+
+  <view class="pg__ft block-footer" wx:if="{{!(activite.date < dateNow)}}">
+    <view class="weui-btn-area">
+      <!-- <view class="classname">{{userInfo.nickName}}-{{activite.Creator}} -{{userInfo.nickName==activite.Creator}}</view> -->
+      <!-- <button bindtap="updateActivite" type="default" hidden="{{!(userInfo.nickName==activite.Creator || isAdmin)}}">更改活动内容</button> -->
+
+      <button bindtap="teamUp" type="primary">分组</button>
+      <button bindtap="saveTeamInfo" type="primary">保存</button>
+      <!-- <button id="btnDelete" bindtap="quitActivite" type="warn" hidden="{{!joinAlready}}">退出活动</button> -->
+    </view>
+  </view>
+</view>

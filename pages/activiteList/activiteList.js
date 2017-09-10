@@ -1,4 +1,4 @@
- // pages/activiteList/activiteList.js
+// pages/activiteList/activiteList.js
 var app = getApp();
 var storage = require('../../utils/storage.js');
 var util = require('../../utils/util.js');
@@ -10,15 +10,24 @@ Page({
   data: {
     dateNow: util.formatTime(new Date()).replace(/\d{2}:\d{2}:\d{2}/, '').trim(),
     activites: [],
-    activitesPast:[],
+    activitesPast: [],
     userInfo: {},
     // onLoad: true,
-    loading:true,
+    loading: true,
     msg: '',
-    showHistory:false
+    showHistory: false,
+    showMenu: false,
   },
   onShow: function (options) {
-    this.loadList();
+
+    let that = this;
+    // throw 'error testing';
+    app.getUserInfo(function (u) {
+      that.setData({
+        userInfo: u
+      });
+      that.loadList();
+    });
   },
 
   /**
@@ -26,8 +35,9 @@ Page({
    */
   onLoad: function (options) {
     let that = this;
+    // throw 'error testing';
     app.getUserInfo(function (u) {
-      console.log(u);
+      // console.log(u);
       that.setData({
         userInfo: u
       });
@@ -40,7 +50,7 @@ Page({
     this.loadList();
     let that = this;
     app.getUserInfo(function (u) {
-      console.log(u);
+      // console.log(u);
       that.setData({
         userInfo: u
       });
@@ -59,19 +69,16 @@ Page({
         let jstr = JSON.stringify([{ name: "12" }]);
         let jobj = JSON.parse(jstr);
         // console.log(resp.data);
-        let actList = resp.data.value.sort((a,b)=>{
-          return (a.date+a.time > b.date+b.time)?1:-1;
+        let actList = resp.data.value.sort((a, b) => {
+          return (a.date + a.time > b.date + b.time) ? 1 : -1;
         });
 
         storage.getActiviteUser(
-          resp=>{
-            console.log(resp.data.value);
-            for(let au of resp.data.value)
-            {
-              for (let a of actList)
-              {
-                if (au.activiteId==a.RowKey)
-                {
+          resp => {
+            // console.log(resp.data.value);
+            for (let au of resp.data.value) {
+              for (let a of actList) {
+                if (au.activiteId == a.RowKey) {
                   a.userNumber = au.userNumber;
                 }
               }
@@ -79,14 +86,14 @@ Page({
 
             let actCurrent = new Array();
             let actPast = new Array();
-            for(let au of actList)
-            {
-              if(au.date<that.data.dateNow)
-              {
-                actPast.push(au);
+            for (let au of actList) {
+              console.log(au.Creator);
+              if (au.date < that.data.dateNow) {
+                if (au.Creator == this.data.userInfo.nickName
+                  || this.data.userInfo.nickName == app.globalData.admin)
+                  {actPast.push(au);}
               }
-              else
-              {
+              else {
                 actCurrent.push(au);
               }
             }
@@ -98,9 +105,6 @@ Page({
             });
           }
         );
-      },
-      fail: err => {
-        console.error(err);
       },
       complete: () => {
       }
@@ -116,13 +120,18 @@ Page({
       url: '../activite/activite'
     })
   },
-  showup(){
+  showup() {
     return 'dasdf';
   },
-  toggleHistory(e){
+  toggleHistory(e) {
     this.setData({
-      showHistory:!this.data.showHistory
+      showHistory: !this.data.showHistory
     })
+  },
+  toggleMenu(e) {
+    console.log('menu tab');
+    this.setData({
+      showMenu: !this.data.showMenu
+    });
   }
-
 })

@@ -3,7 +3,9 @@ let
 let url_data = 'https://ellise.table.core.windows.net';
 let tableName = 'ettest';
 let tableConversationName = 'message';
-let tableActiviteUserNumber = 'activiteUserNumber'
+let tableActiviteUserNumber = 'activiteUserNumber';
+let tableLog = 'log';
+let tableTeam = 'activiteTeam';
 let filter_allList = "$filter=PartitionKey%20eq%20'activite'";
 
 let getInsertUrl = function (table = tableName) {
@@ -38,7 +40,7 @@ let loadUserList = function (activiteId, cb_success, cb_failure) {
   // console.log('storage => load userid aid=' + activiteId);
   let filterStr = "$filter=PartitionKey%20eq%20'user'%20and%20activiteId%20eq%20'" + activiteId + "'";
   let urlgetuserList = getFilterUrl(filterStr);
-  // console.log(urlgetuserList);
+  console.log(urlgetuserList);
   if (!cb_failure)
     cb_failure = err => { console.error(err); };
   wx.request({
@@ -56,9 +58,14 @@ let insertData = (data, cb_success, cb_failure) => {
   console.log('storage => insert data');
   let url = getInsertUrl();
   if (!cb_success)
-    cb_success = resp => { console.log(resp); };
+    cb_success = resp => { 
+      console.log(resp); 
+      };
   if (!cb_failure)
-    cb_failure = err => { console.error(err); };
+    cb_failure = err => { 
+      console.error(err); 
+      storage.log(err);
+      };
   wx.request({
     url: url,
     method: 'POST',
@@ -140,8 +147,6 @@ let insertConversation = (data, cb_success, cb_failure) => {
   let url = getInsertUrl(tableConversationName);
   if (!cb_success)
     cb_success = resp => { console.log(resp); };
-  if (!cb_failure)
-    cb_failure = err => { console.error(err); };
   wx.request({
     url: url,
     method: 'POST',
@@ -244,6 +249,105 @@ let updateActiviteUserNumber = (activiteId, userNumber, cb_success, cb_failure) 
   
 }
 
+//team msg
+//------------------------------------------------------------------------
+let getTeamInfo = (activiteId, cb_success, cb_failure) =>{
+  let filterStr = "$filter=PartitionKey%20eq%20'team'%20and%20activiteId%20eq%20'" + activiteId + "'";
+  let exists_url = getFilterUrl(filterStr, tableTeam);
+  wx.request({
+    url: exists_url,
+    method: 'GET',
+    header: {
+      Accept: 'application/json'
+    },
+    success:cb_success,
+    fail:cb_failure
+  });
+}
+
+let updateTeamInfo = (activiteId,teamInfo, cb_success, cb_failure) => {
+  // console.log('storage => udpate ActiviteUserNumber');
+  let updateFlag = true;
+  let rowKey = '';
+  let filterStr = "$filter=PartitionKey%20eq%20'team'%20and%20activiteId%20eq%20'" + activiteId + "'";
+  let exists_url = getFilterUrl(filterStr, tableTeam);
+  wx.request({
+    url: exists_url,
+    method: 'GET',
+    header: {
+      Accept: 'application/json'
+    },
+    success: resp => {
+      // console.log('data is -------------------');
+      // console.log(resp.data);
+      updateFlag = (resp.data.value.length > 0) ? true : false;
+      rowKey = updateFlag ? resp.data.value[0].RowKey : Date.now().toString();
+      console.log('updateTeam updateFlag:' + updateFlag);
+
+      let verb = updateFlag ? 'PUT' : 'POST';
+      let url = updateFlag ? getUpdateUrl('team', rowKey, tableTeam) : getInsertUrl(tableTeam);
+
+      if (!cb_success)
+        cb_success = resp => { console.log(resp); };
+      if (!cb_failure)
+        cb_failure = err => { console.error(err); };
+      let data = {
+        PartitionKey: 'team',
+        RowKey: rowKey,
+        activiteId: activiteId,
+        teamInfo: JSON.stringify(teamInfo)
+      }
+      console.log('udpateTeam - ' + url);
+      wx.request({
+        url: url,
+        method: verb,
+        data: data,
+        header: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        success: cb_success,
+        fail: cb_failure
+      });
+    }
+  });
+
+}
+
+
+let log = (msg, cb_success, cb_failure) => {
+  console.log('storage => insert log');
+  let url = getInsertUrl(tableLog);
+  if (!cb_success)
+    cb_success = resp => { 
+      wx.redirectTo({
+        url: "../error/error?msg=真抱歉，系统出错了T_T",
+      });
+    };
+  if (!cb_failure)
+    cb_failure = err => { 
+      wx.redirectTo({
+        url: "../error/error?msg=网络连接好慢啊，请重试",
+      });
+     };
+  let data = {
+    "PartitionKey": "log",
+    "RowKey": Date.now().toString(),
+    "msg": msg
+  };
+  wx.request({
+    url: url,
+    method: 'POST',
+    data: data,
+    header: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    },
+    success: cb_success,
+    fail: cb_failure
+  });
+}
+
 module.exports = {
   token,
   url_data,
@@ -259,5 +363,8 @@ module.exports = {
   insertConversation,
   getMessageByActiviteId,
   getActiviteUser,
-  updateActiviteUserNumber
+  updateActiviteUserNumber,
+  getTeamInfo,
+  updateTeamInfo,
+  log
 }

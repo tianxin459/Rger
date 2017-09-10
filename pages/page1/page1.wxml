@@ -1,11 +1,114 @@
-<!--logs.wxml-->
-<text>Test</text>
-<view class="listContainer">
-  <view class="item {{p.gender==1?'m':'f'}} " wx:for="{{nameList}}" wx:for-item="p" wx:key="*this" hover-class="item-hover">
-    <image class="avatar" src="{{p.avatarUrl}}" background-size="cover"></image>
-    <text>{{p.name}}</text>
+<!--pages/activite/activite.wxml-->
+<!-- <text>pages/activite/activite.wxml</text> -->
+<!-- <view class="" wx:if="{{loading}}">
+  <view class="loading-container">
+    <image class="center" src="../../resources/loading1.gif"></image>
   </view>
+</view> -->
+<view class="page">
+  <view class="pg__hd">
+    <text class="pg__title">创建活动</text>
+  </view>
+  <!-- <form bindsubmit="submitActivite" class="">  -->
+  <view class="pg__bd page__bd_spacing">
+    <!-- <view class="weui-cells__title">标题</view> -->
+    <view class="weui-cells weui-cells_form">
+      <view class="weui-cell">
+        <view class="weui-cell__bd">
+          <view class="noline">
+            <view class="title title-{{titleInput?'a':'s'}}">活动标题</view>
+          </view>
+          <!-- <view class="title title-{{titleInput?'a':'s'}}">活动标题</view> -->
+          <input name="title" bindinput="inputTitle" bindfocus="focusTitle" bindblur="blurTitle" class="weui-input {{titleFlag?'':'error'}}" type="text" value="{{title}}" maxlength="20" />
+        </view>
+      </view>
+
+      <!-- <view class="weui-cells__title">活动日期</view> -->
+      <!-- <view class="weui-cells weui-cells_form"> -->
+      <view class="weui-cell">
+        <view class="weui-cell__bd datetime">
+          活动日期:
+          <picker class="" mode="date" value="{{date}}" start="2015-09-01" end="2018-09-01" bindchange="bindDateChange">
+            <view class="picker">
+              {{date||'YYYY-MM-DD'}}
+            </view>
+          </picker>
+          <picker class="" mode="time" value="{{time}}" start="09:01" end="23:01" bindchange="bindTimeChange">
+            <view class="picker">
+              {{time||'00:00'}}
+            </view>
+          </picker>
+        </view>
+      </view>
+      <!-- </view> -->
+
+      <!-- <view class="weui-cells__title">持续时间</view> -->
+      <!-- <view class="weui-cells weui-cells_form"> -->
+      <view class="weui-cell">
+        <view class="weui-cell__bd">
+          <view class="classname">时间(小时):</view>
+          <!-- <input name="duration" type="digit" /> -->
+          <slider name="duration" max="5" step="0.5" show-value="true" value="{{duration}}" bindchange="inputDuration" />
+        </view>
+      </view>
+      <!-- </view> -->
+
+      <!--活动地点-->
+      <!-- <view class="weui-cells weui-cells_form"> -->
+      <view class="weui-cell">
+        <view class="weui-cell__bd">
+          <view class="picker">
+            {{location.title}}
+          </view>
+          <view class="picker" hidden="{{location.address ==undefined || location.address == null}}">
+            地址: {{location.address}}
+          </view>
+          <view class="weui-search-bar">
+            <view class="weui-search-bar__form">
+              <view class="weui-search-bar__box">
+                <icon class="weui-icon-search_in-box" type="search" size="14"></icon>
+                <input type="text" class="weui-search-bar__input" placeholder="搜索地点名称" value="{{inputVal}}" focus="{{inputShowed}}" bindinput="inputTyping" confirm-type="Search" bindconfirm="openSheet" />
+                <view class="weui-icon-clear" wx:if="{{inputVal.length > 0}}" bindtap="clearInput">
+                  <icon type="clear" size="14"></icon>
+                </view>
+              </view>
+              <label class="weui-search-bar__label" hidden="{{inputShowed}}" bindtap="showInput">
+                    <icon class="weui-icon-search" type="search" size="14"></icon>
+                    <view class="weui-search-bar__text">设定活动地点</view>
+                </label>
+            </view>
+            <view class="weui-search-bar__cancel-btn" hidden="{{!inputShowed}}" bindtap="openSheet">搜索</view>
+          </view>
+        </view>
+      </view>
+      <!-- </view> -->
+
+      <!-- <view class="weui-cells__title">内容</view> -->
+      <!-- <view class="weui-cells_form"> -->
+      <view class="weui-cell__bd textarea">
+        <view class="noline">
+          <view class="title title-{{titleInput?'a':'s'}}">活动简介</view>
+        </view>
+        <view class="weui-cell__bd">
+          <textarea name="content" bindinput="inputContent" class="weui-textarea" maxlength="200" value="{{content}}"></textarea>
+        </view>
+      </view>
+    </view>
+
+  </view>
+  <view class="block-footer">
+    <view class="weui-btn-area">
+      <button class="btn" open-type="share">
+      <image class="btn-share-img" src="../../resources/share2.png"></image>
+      </button>
+      <button type="primary" bindtap="submitActivite">保存</button>
+      <button type="warn" hidden="{{!isUpdateFlag}}" bindtap="deleteActivite">删除</button>
+    </view>
+  </view>
+  <!-- </form>  -->
 </view>
-<view class="classname">
-  <button bindtap="Sort">Click</button>
-</view>
+<!-- 
+<view class="arrow {{startGuide?'moving':''}}">
+  <image src="../../resources/arrow2.png" class="" />
+  <view class="classname">点击分享活动</view>
+</view> -->

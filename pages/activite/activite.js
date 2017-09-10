@@ -2,6 +2,7 @@
 var app = getApp();
 var storage = require('../../utils/storage.js');
 var place = require('../../utils/place.js');
+var util = require('../../utils/util.js');
 Page({
   /**
    * 页面的初始数据
@@ -9,7 +10,8 @@ Page({
 
   activiteId: '',
   data: {
-    isAdminDate:false,
+    isAdminDate: false,
+    isCopy: false,
     loading: true,
     activiteId: '',
     title: '',
@@ -27,14 +29,17 @@ Page({
     inputVal: "",
     inputShowed: false,
     isUpdateFlag: false,
-    activite: {}
+    activite: {},
+    titleInput: false,
+    contentInput: false,
+    dayOfWeek: '',
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log(options.id);
+    this.data.isCopy = !!options.isCopy;
     let that = this;
     //if id exists then in update status
     if (!!options.id) {
@@ -43,6 +48,21 @@ Page({
         resp => {
           console.log(resp.data.value[0]);
           let a = resp.data.value[0];
+          // let dateNow = util.formatTime(new Date()).replace(/\d{2}:\d{2}:\d{2}/, '').trim();
+          if (that.data.isCopy && !!a.date) {
+            let nearestDate = new Date(a.date);
+            let dateNow = new Date();
+            while (nearestDate < dateNow) {
+              nearestDate.setDate(nearestDate.getDate() + 7);
+            }
+            // console.log(nearestDate);
+            // console(util.weekDay[nearestDate.getDay()]);
+            a.date = util.formatTime(nearestDate).replace(/\d{2}:\d{2}:\d{2}/, '').trim();
+            console.log(a.date);
+          }
+
+
+          let day = (new Date(a.date)).getDay();
           let loc = JSON.parse(a.location || '{}');
           if (a === undefined)
             return;
@@ -57,11 +77,11 @@ Page({
             activite: a,
             isUpdateFlag: true,
             id: options.id,
-            loading: false
-          },
-            e => {
-              console.error(e);
-            });
+            loading: false,
+            dayOfWeek: util.weekDay[day],
+            titleInput: !!a.title,
+            contentInput: !!a.content,
+          });
         });
     }
     app.getUserInfo(userInfo => {
@@ -73,7 +93,7 @@ Page({
         console.error(e);
       });
   },
-  onShow:function(options){
+  onShow: function (options) {
 
   },
   onSubmit() {
@@ -110,7 +130,7 @@ Page({
           });
       });
 
-    
+
   },
   submitActivite(e) {
     if (!this.data.title) {
@@ -135,6 +155,9 @@ Page({
     var url = storage.getInsertUrl();
     // console.log(url);
     let rowKey = this.data.isUpdateFlag ? this.data.activite.RowKey : Date.now().toString();
+    let rowKeyTemp = rowKey;
+    rowKey = this.data.isCopy ? Date.now().toString() : rowKey;
+    console.log(`isCopy=${this.data.isCopy},rowKey=${rowKey}/${rowKeyTemp}`);
     let isAdminFlag = app.globalData.admin == this.data.userInfo.nickName;
     console.log('isAdminFlag=' + isAdminFlag)
     let creatorName = (isAdminFlag && this.data.isUpdateFlag) ? this.data.activite.Creator : this.data.userInfo.nickName;
@@ -179,8 +202,10 @@ Page({
     });
   },
   bindDateChange(e) {
+    let day = (new Date(e.detail.value)).getDay();
     this.setData({
-      date: e.detail.value
+      date: e.detail.value,
+      dayOfWeek: util.weekDay[day]
     });
   },
   openAlert() {
@@ -209,14 +234,37 @@ Page({
   },
 
   //input 
-  inputTitle(e) {
+  //-------------------------------
+  inputTitle: function (e) {
     this.setData({
-      title: e.detail.value
+      title: e.detail.value,
+      // titleInput: !!e.detail.value
+    });
+  },
+  focusTitle: function (e) {
+    this.setData({
+      titleInput: true
+    });
+  },
+  blurTitle: function (e) {
+    this.setData({
+      titleInput: !!e.detail.value
     });
   },
   inputContent(e) {
     this.setData({
       content: e.detail.value
+    });
+  },
+  focusContent: function (e) {
+    this.setData({
+      contentInput: true
+    });
+  },
+  blurContent: function (e) {
+    this.setData({
+      content: e.detail.value,
+      contentInput: !!e.detail.value
     });
   },
   inputDuration(e) {
@@ -229,7 +277,11 @@ Page({
       locationName: e.detail.value
     });
   },
+
+  //--------------------------------
   openSheet() {
+    if (!this.data.locationName)
+      return;
     let that = this;
     wx.showLoading({
       title: '查询中...',
@@ -240,7 +292,7 @@ Page({
       resp => {
         console.log('loading complete');
         wx.hideLoading();
-        if (resp.data.data.length == 0) {
+        if (!!resp.data&&!!resp.data.data&&resp.data.data.length == 0) {
           wx.showModal({
             content: '无搜索结果',
             showCancel: false,
@@ -269,8 +321,7 @@ Page({
             }
           });
         }
-      },
-      err => { console.error(err); }
+      }
     );
   },
   showInput: function () {

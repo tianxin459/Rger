@@ -11,6 +11,8 @@ Page({
   data: {
     isAdmin: false,
     dateNow: '',
+    onShare:false,
+    menuDisplay:true,
     showHelp: false,
     loading: true,
     title: '',
@@ -27,7 +29,16 @@ Page({
     message: '',
     lastMessageRowKey: '',
     messageEntering: false,
-    lastMessage: ''
+    lastMessage: '',
+    teamGroup: [],
+  },
+  onShow: function (e) {
+    let that = this;
+    messageLoader = setInterval(() => {
+      if (!that.data.requesting) {
+        that.loadMessage(that.data.activiteId);
+      }
+    }, 1000);
   },
   /**
    * 生命周期函数--监听页面加载
@@ -53,7 +64,7 @@ Page({
       storage.queryData(filterStr,
         resp => {
           let a = resp.data.value[0];
-          let day = (new Date(a.date)).getDay();
+          let day = (new Date(a.date||Date())).getDay();
           a.dayOfWeek = util.weekDay[day];
           a.location = a.location || '{}';
           data_title = a.title;
@@ -64,7 +75,7 @@ Page({
           data_requesting = false;
           finishdData = true;
           let isAdminFlag = app.globalData.admin == data_userInfo.nickName;
-          
+
           let isAdminDate = isAdminFlag ? '1980-01-01' : util.formatTime(new Date()).replace(/\d{2}:\d{2}:\d{2}/, '').trim();
           that.setData({
             isAdmin: isAdminFlag,
@@ -77,7 +88,6 @@ Page({
             activiteLocation: data_activiteLocation,
             requesting: data_requesting,
           });
-
           // let userInfo = this.data.userInfo;
           that.loadUserList(options.id);
         },
@@ -91,14 +101,14 @@ Page({
 
     // console.log('load userlist aid=' + options.id);
 
-    that.loadMessage(options.id);
-    //load message
-    messageLoader = setInterval(() => {
-      if (!that.data.requesting) {
-        // console.log('go request ' + options.id);
-        that.loadMessage(options.id);
-      }
-    }, 1000);
+    // that.loadMessage(options.id);
+    // //load message
+    // messageLoader = setInterval(() => {
+    //   if (!that.data.requesting) {
+    //     // console.log('go request ' + options.id);
+    //     that.loadMessage(options.id);
+    //   }
+    // }, 1000);
   },
 
   /**
@@ -107,15 +117,15 @@ Page({
   onHide: function () {
     let that = this;
     clearInterval(messageLoader);
-    let messageListErr = that.data.messageList;
-    messageListErr.push({
-      creator: 'System',
-      message: '留言板连接已断开，请重新进入页面'
-    });
-    that.setData({
-      messageList: messageListErr,
-      requesting: false
-    });
+    // let messageListErr = that.data.messageList;
+    // messageListErr.push({
+    //   creator: 'System',
+    //   message: '留言板连接已断开，请重新进入页面'
+    // });
+    // that.setData({
+    //   messageList: messageListErr,
+    //   requesting: false
+    // });
   },
 
   /**
@@ -128,16 +138,20 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
+    this.setData({ menuDisplay:false});
+    let that = this;
     return {
       title: this.data.activite.title,
       desc: this.data.activite.content,
       path: '/pages/activiteDetail/activiteDetail?id=' + this.data.activiteId,
       success: function (res) {
         console.log('分享成功');
+        that.setData({ menuDisplay: true });
       },
       fail: function (res) {
         console.error('分享失败');
         console.error(res);
+        that.setData({ menuDisplay: true });
       }
     }
   },
@@ -146,34 +160,43 @@ Page({
       url: '../activite/activite?id=' + this.data.activiteId
     });
   },
+  copyActivite(e) {
+    wx.redirectTo({
+      url: `../activite/activite?id=${this.data.activiteId}&isCopy=true`
+    });
+  },
   submitActivite(e) {
     var url = storage.getInsertUrl();
     let userInfo = this.data.userInfo;
     let that = this;
 
-    let filterStr = "$filter=PartitionKey%20eq%20'user'%20and%20activiteId%20eq%20'" + that.data.activiteId + "'and%20nickName%20eq%20'" + userInfo.nickName + "'";
-
-    let urlgetuser = storage.getFilterUrl(filterStr);
-    storage.queryData(filterStr,
-      resp => { resp.data.value.length == 0 && that.enrollActivite(); },
-      err => console.error(err)
-    );
-  },
-  enrollActivite() {
-    // console.log('enroll');
     wx.showLoading({
       title: '加入中...',
       mask: true
     });
+    
+    let filterStr = "$filter=PartitionKey%20eq%20'user'%20and%20activiteId%20eq%20'" + that.data.activiteId + "'and%20nickName%20eq%20'" + userInfo.nickName + "'";
+
+    let urlgetuser = storage.getFilterUrl(filterStr);
+    storage.queryData(filterStr,
+      resp => {
+        if (resp.data.value == undefined || resp.data.value.length == 0) {
+          that.enrollActivite();
+        }
+      }
+    );
+  },
+  enrollActivite() {
+    // console.log('enroll');
     var url = storage.getInsertUrl();
     let userInfo = this.data.userInfo;
     let that = this;
     let data = {
+      "PartitionKey": "user",
+      "RowKey": Date.now().toString(),
       "nickName": userInfo.nickName,
       "avatarUrl": userInfo.avatarUrl,
       "gender": userInfo.gender,
-      "PartitionKey": "user",
-      "RowKey": Date.now().toString(),
       "activiteId": that.data.activiteId
     };
 
@@ -181,8 +204,7 @@ Page({
       resp => {
         that.loadUserList(that.data.activiteId);
         wx.hideLoading();
-      },
-      err => { console.error(err); }
+      }
     );
   },
   loadUserList(activiteId) {
@@ -200,7 +222,7 @@ Page({
         }
         console.log(userInfo.nickName + '|' + enrolledflag);
         let userList = resp.data.value;
-        let updateNumberFlag = userList.length != this.data.userList.length
+        let updateNumberFlag = userList.length != that.data.userList.length
         //for testing -start
         // for(var it = 0;it<12;it++)
         // {
@@ -281,7 +303,8 @@ Page({
     storage.getMessageByActiviteId(activiteId,
       resp => {
         //set the lastMessageRowKey separately for rendering the page
-        let lastMsgRowKey = resp.data.value.length > 0 ? resp.data.value[resp.data.value.length - 1].RowKey : '';
+        let lastMsgRowKey = (resp.data.value == undefined || resp.data.value.length == 0) ? '' : resp.data.value[resp.data.value.length - 1].RowKey
+        // let lastMsgRowKey = resp.data.value.length > 0 ? resp.data.value[resp.data.value.length - 1].RowKey : '';
 
         that.setData({
           messageList: resp.data.value,
@@ -304,8 +327,10 @@ Page({
     );
   },
   toggleMessageBoard(e) {
+    let boardOpen = !this.data.openMessageBoard;
     this.setData({
-      openMessageBoard: !this.data.openMessageBoard
+      openMessageBoard: boardOpen,
+      menuDisplay: !boardOpen
     });
   },
   inputMessage(e) {
@@ -335,6 +360,35 @@ Page({
     console.log('hidehelp');
     this.setData({
       showHelp: false
+    })
+  },
+  //teamup
+  //--------------------------------------------
+  teamUp(e) {
+    let teamArray = new Array();
+    this.data.userList.sort((a, b) => {
+      return Math.random() > 0.5 ? -1 : 1;
+    }).forEach((u) => {
+      teamArray.push({
+        avatarUrl: u.avatarUrl,
+        nickName: u.nickName
+      });
+    });
+    this.data.teamGroup = teamArray;
+    // console.log(JSON.stringify(this.data.teamGroup));
+    wx.setStorageSync("team", this.data.userList);
+    wx.navigateTo({
+      url: '../activiteTeam/activiteTeam?activiteId=' + this.data.activiteId
+    });
+  },
+  toggleMenu(e) {
+    this.setData({
+      showMenu: !this.data.showMenu
+    });
+  },
+  goToHome: function (e) {
+    wx.navigateTo({
+      url: '../activiteList/activiteList',
     })
   }
 })

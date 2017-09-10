@@ -7,17 +7,37 @@
   </view>
 </view>
 <view class="page" hidden="{{loading}}">
-  <view class="pg__hd logo-title" bindtap="addActivite">
+  <view class="pg__hd logo-title">
     <image class="logo" src="../../resources/logo.png"></image>
     <view class="pg__title">
       <view class="text-h1">一起<text class="green">哦</text></view>
       <view class="">你可以发起活动并分享给好友</view>
     </view>
-    <!-- <text class="pg__title">{{msg}}</text> -->
+    <!-- <view class="menu">
+       <image class="menu-button menu-button{{showMenu?'-active':'-inactive'}}" src="../../resources/bars.png" bindtap="toggleMenu"></image> 
+      <view class="menu-content menu-content{{showMenu?'-active':'-inactive'}}">
+        <view class="menu-item">item 1</view>
+        <view class="menu-item">item 2</view>
+      </view>
+    </view> -->
+    <!-- <view class="menu">
+      <label class="menu-open-button" for="menu-open" bindtap="toggleMenu">
+        <text class="lines line-1{{showMenu?'-active':''}}"></text>
+        <text class="lines line-2{{showMenu?'-active':''}}"></text>
+        <text class="lines line-3{{showMenu?'-active':''}}"></text>
+      </label>
+      <button class="menu-item {{showMenu?'menu-item-1-active':''}}" open-type="share">
+        <view class="menu-text">分享</view>
+      </button>
+      <view class="menu-item {{showMenu?'menu-item-2-active':''}} blue" bindtap="copyActivite">复制</view>
+      <view class="menu-item {{showMenu? 'menu-item-3-active': ''}} blue" bindtap="teamUp">分组</view>
+      <view class="menu-item {{showMenu?'menu-item-4-active':''}} blue" bindtap="updateActivite" wx:if="{{(userInfo.nickName==activite.Creator || isAdmin)}}">更改</view>
+    </view> -->
   </view>
+
   <view class="pg__bd page__bd_spacing">
     <view class="weui-cells">
-      <view class="weui-cell line" wx:for="{{activites}}" wx:for-item="a" wx:key="*this" bindtap="join" data-id="{{a.RowKey}}">
+      <view class="weui-cell line" wx:for="{{activites}}" wx:for-item="a" wx:key="Rowkey" bindtap="join" data-id="{{a.RowKey}}">
         <image class="creator" wx:if="{{a.Creator==userInfo.nickName}}" src="../../resources/user1.png"></image>
         <view class="weui-cell__bd">
           <view class="text-h2">{{a.title}} </view>
@@ -40,7 +60,7 @@
       </view>
       <view class="listDown-mask" wx:if="{{!showHistory}}">
       </view>
-      <view class="weui-cell line listPast {{showHistory?'showHistory':''}}" wx:for="{{activitesPast}}" wx:for-item="a" wx:key="*this" bindtap="join" data-id="{{a.RowKey}}">
+      <view class="weui-cell line listPast {{showHistory?'showHistory':''}}" wx:for="{{activitesPast}}" wx:for-item="a" wx:key="RowKey" bindtap="join" data-id="{{a.RowKey}}">
         <image class="creator" wx:if="{{a.Creator==userInfo.nickName}}" src="../../resources/user1.png"></image>
         <view class="weui-cell__bd">
           <view class="text-h2">{{a.title}} </view>

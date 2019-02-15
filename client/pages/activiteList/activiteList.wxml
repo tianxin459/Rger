@@ -10,8 +10,8 @@
   <view class="pg__hd logo-title">
     <image class="logo" src="../../resources/logo.png"></image>
     <view class="pg__title">
-      <view class="text-h1">一起<text class="green">哦</text></view>
-      <view class="">你可以发起活动并分享给好友</view>
+      <view class="text-h1">{{lang.app_title_1}}<text class="green">{{lang.app_title_2}}</text></view>
+      <view class="">{{lang.app_subtitle}}</view>
     </view>
   </view>
 
@@ -22,13 +22,14 @@
         <view class="weui-cell__bd">
           <view class="text-h2">{{a.title}} </view>
           <view class="text-remark">{{a.date}} {{a.time}}</view>
-          <view class="text-remark"><text class="text-h2">参加人数:{{a.userNumber||'0'}}</text></view>
+          <view class="text-remark"><text class="text-h2">{{lang.numberOfParticipants}}:{{a.userNumber||'0'}}{{a.peopleLimit>0?'/'+a.peopleLimit:''}}</text></view>
+          <!-- <image class="img-icon-password" src="../../resources/locked.png" background-size="cover" bindtap="switchLang" ></image> -->
         </view>
       </view>
     </view>
     <view class="">
       <view class="listDown text-h2" bindtap="toggleHistory">
-        <view class="listDown-text">历史活动</view>
+        <view class="listDown-text">{{lang.history}}</view>
       </view>
       <view class="listDown-mask" wx:if="{{!showHistory}}">
       </view>
@@ -37,14 +38,17 @@
         <view class="weui-cell__bd">
           <view class="text-h2">{{a.title}} </view>
           <view class="text-remark">{{a.date}} {{a.time}}</view>
-          <view class="text-remark"><text class="text-h2">参加人数:{{a.userNumber||'0'}}</text></view>
+          <view class="text-remark"><text class="text-h2">{{lang.numberOfParticipants}}:{{a.userNumber||'0'}}</text></view>
         </view>
       </view>
     </view>
   </view>
   <view class="block-footer">
     <view class="weui-btn-area">
-      <button bindtap="addActivite" type="primary">发起活动</button>
+      <button bindtap="addActivite" type="primary">{{lang.newEvent}}</button>
+    </view>
+    <view class="weui-btn-area floating-btn-area">
+      <image class="img-icon-button" src="../../resources/translation2.png" background-size="cover" bindtap="switchLang" ></image>
     </view>
   </view>
 </view>

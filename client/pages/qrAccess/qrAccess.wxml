@@ -1,0 +1,3 @@
+<!--pages/qrAccess/qrAccess.wxml-->
+<text>pages/qrAccess/qrAccess.wxml</text>
+<view class="">QRInfo={{qrId}}</view>

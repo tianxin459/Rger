@@ -1,23 +1,35 @@
-// pages/error/error.js
+// pages/qrAccess/qrAccess.js
+
+var qrCode = require('../../utils/qrCode.js');
+var lang = require('../../i18n/lang.js');
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    errorMessage:''
+    qrId:''
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var scene = decodeURIComponent(options.scene);
+    qrCode.getAccessToken((resp)=>{
+        console.log(resp);
+    });
     this.setData({
-      errorMessage:options.msg
+      qrId : scene
     });
 
-    // var scene = decodeURIComponent(options.scene);
-    // console.log("sceneQR=" + scene);
+    // if (!!scene)
+    // {
+    //   wx.navigateTo({
+    //     url: '../activiteDetail/activiteDetail?id=' + scene
+    //   });
+    // }
   },
 
   /**
@@ -61,16 +73,11 @@ Page({
   onReachBottom: function () {
   
   },
-  onGotUserInfo() {
-    console.log('go home');
-    wx.redirectTo({
-      url: "../activiteList/activiteList",
-    });
-  },
-  goHome(){
-    console.log('go home');
-    wx.redirectTo({
-      url: "../activiteList/activiteList",
-    });
+
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function () {
+  
   }
 })

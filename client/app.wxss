@@ -16,6 +16,10 @@ textarea {
   height: 5em;
 }
 
+.textError{
+  color:red;
+}
+
 .mask {
   width: 100vw;
   height: 100vh;
@@ -49,8 +53,8 @@ image.avatar-icon-gender {
   width: 50px;
   height: 50px;
   border-radius: 25px;
-  border: 1px solid black;
-  box-shadow: 3px 3px 3px;
+  /* border: 1px solid black;
+  box-shadow: 3px 3px 3px; */
   background-color: white;
 }
 
@@ -109,6 +113,13 @@ image.avatar-icon-gender {
 
 .weui-btn-area {
   margin: 10px;
+}
+.btn-area-2{
+  display: flex;
+}
+
+.btn-half{
+  width: 50%
 }
 
 .logo-title {
@@ -234,4 +245,44 @@ page {
 .btn-share-img{
   width: 25px;
   height: 25px;
+}
+
+.img-icon-button{
+  width: 50rpx;
+  height: 50rpx;
+  vertical-align:middle;
+  transition: ease;
+  transition-duration: 0.5s;
+}
+
+.floating-btn-area:active{
+  background-color: var(--color-green);
+  border: 1px solid var(--color-gray);
+  color: white;
+}
+.floating-btn-area:active image{
+  opacity: 0.5;
+}
+
+.floating-btn-area{
+  position: fixed;
+  bottom: 140rpx;
+  right: 20rpx;
+  width:80rpx;
+  height: 80rpx;
+  display:flex;
+  align-items:center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: ease;
+  transition-duration: 0.5s;
+  border: 1px solid white;
+}
+.floating-btn-area button{
+  border:2px solid darkgreen;
+  border-radius:50%;
+  width:100rpx;
+  height:100rpx;
+  background-color: green;
+   color:var(--color-green); 
 }

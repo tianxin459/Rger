@@ -118,6 +118,16 @@ button.menu-item {
     transform: translate3d(0, 350px, 0);
 }
 
+.menu-item.menu-item-active:nth-child(7) 
+{
+    transform: translate3d(0, 420px, 0);
+}
+
+.menu-item.menu-item-active:nth-child(8) 
+{
+    transform: translate3d(0, 490px, 0);
+}
+
 .menu-goHome{
   color: white;
   background-color: #4c5b5c;

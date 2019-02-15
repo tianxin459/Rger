@@ -29,6 +29,7 @@
   flex-direction: column;
 }
 .weui-cells_form {
+  height: 100%;
   padding: 0px 4px;
   border-radius: 10px;
   border:1px solid gainsboro;
@@ -183,3 +184,65 @@ input[type="text"] {
   justify-content: flex-start;
   flex-direction: column;
 } */
+
+.floating-btn-area {
+bottom:150rpx;
+right:30rpx;
+}
+
+
+.advanceSettings{
+  /* position: absolute;
+  top: 160rpx;
+  background-color: gold;
+  width: 85vw;
+  height: 75vh;
+  margin: 0 50rpx;
+  border: 1px solid #999;
+  transition: linear;
+  transition-duration: 0.2s; */
+}
+
+.img-icon-button{
+  transition: linear;
+  transition-duration: 0.2s;
+}
+.img-icon-button:active{
+  transform: rotateZ(180deg);
+}
+
+.advanceSettingDisplay{
+}
+
+.fliper{
+  height: 75vh;
+  transform-style: preserve-3d;
+  perspective: 500px;
+  transition: linear;
+  transition-duration: 0.2s;
+}
+.flip-back,
+.flip-front{
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  transition: linear;
+  transition-duration: 0.2s;
+}
+
+.flip-front{
+    z-index: 5;
+    backface-visibility: hidden;  /*重要*/
+    transform: rotateY(0deg);
+}
+.flip-back{
+    backface-visibility: hidden;  /*重要*/
+    transform: rotateY(-180deg);
+}
+.flip{
+  transform: rotateY(180deg);
+}
+/* temp */
+.flip textarea{
+  display: none;
+}

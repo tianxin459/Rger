@@ -2,12 +2,17 @@
 var app = getApp();
 var storage = require('../../utils/storage.js');
 var util = require('../../utils/util.js');
+var lang = require('../../i18n/lang.js');
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    lang: lang[app.globalData.lang],
+    btnLangText: app.globalData.langSet[app.globalData.langSetIndex],
+
     dateNow: util.formatTime(new Date()).replace(/\d{2}:\d{2}:\d{2}/, '').trim(),
     activites: [],
     activitesPast: [],
@@ -17,6 +22,13 @@ Page({
     msg: '',
     showHistory: false,
     showMenu: false,
+  },
+  switchLang(e) {
+    app.globalData.langSetIndex = (app.globalData.langSetIndex + 1) % 2;
+    app.globalData.lang = app.globalData.langSet[app.globalData.langSetIndex];
+    this.setData({
+      lang: lang[app.globalData.lang]
+    })
   },
   onShow: function (options) {
 
@@ -34,14 +46,22 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    let date = new Date();
+    console.log(date.getFullYear(),date.getMonth(),date.getDate());
+
+    this.setData({
+      lang: lang[app.globalData.lang]
+    });
+
+    console.log(app.globalData.userInfo);
     let that = this;
     // throw 'error testing';
     app.getUserInfo(function (u) {
-      // console.log(u);
       that.setData({
         userInfo: u
       });
     });
+
   },
   /**
    * 页面相关事件处理函数--监听用户下拉动作
@@ -87,7 +107,7 @@ Page({
             let actCurrent = new Array();
             let actPast = new Array();
             for (let au of actList) {
-              console.log(au.Creator);
+              //console.log(au.Creator);
               if (au.date < that.data.dateNow) {
                 if (au.Creator == this.data.userInfo.nickName
                   || this.data.userInfo.nickName == app.globalData.admin)
@@ -97,6 +117,13 @@ Page({
                 actCurrent.push(au);
               }
             }
+
+            //order the history list
+            actPast = actPast.sort((a,b)=>{
+              if (a.date > b.date) return -1;
+              else if (a.date < b.date) return 1;
+              else return 0;
+            });
             console.log('loading complete');
             that.setData({
               activites: actCurrent,
@@ -133,5 +160,5 @@ Page({
     this.setData({
       showMenu: !this.data.showMenu
     });
-  }
+  },
 })

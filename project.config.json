@@ -1,7 +1,40 @@
 {
-	"client": "./client",
-	"svr": "./server",
+	"client": "client/",
+	"svr": "server/",
 	"setting": {
-		"urlCheck": true
+		"urlCheck": true,
+		"newFeature": true
+	},
+	"libVersion": "2.4.0",
+	"appid": "wx65c33dab465989c4",
+	"projectname": "%E4%B8%80%E8%B5%B7%E5%93%A6",
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": 0,
+			"list": []
+		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"current": -1,
+			"list": []
+		},
+		"miniprogram": {
+			"current": 0,
+			"list": [
+				{
+					"id": 0,
+					"name": "二维码扫描",
+					"pathName": "pages/qrAccess/qrAccess",
+					"query": "scene=1502699526516"
+				}
+			]
+		}
 	}
 }

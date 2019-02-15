@@ -1,10 +1,11 @@
 {
-  "pages":[
+  "pages": [
     "pages/activiteList/activiteList",
+    "pages/preload",
     "pages/activiteDetail/activiteDetail",
     "pages/activite/activite",
-    "pages/activiteTeam/activiteTeam",
     "pages/error/error",
+    "pages/activiteTeam/activiteTeam",
     "pages/page1/page1",
     "pages/animate/animate",
     "pages/conversation/conversation",
@@ -12,12 +13,13 @@
     "pages/index/index",
     "pages/logs/logs",
     "pages/page2/page2",
+    "pages/qrAccess/qrAccess",
     "pages/map/map"
   ],
-  "window":{
-    "backgroundTextStyle":"light",
+  "window": {
+    "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "一起哦",
-    "navigationBarTextStyle":"black"
+    "navigationBarTextStyle": "black"
   }
 }

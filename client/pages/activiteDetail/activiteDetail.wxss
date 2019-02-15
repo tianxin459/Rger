@@ -52,6 +52,68 @@
   border-radius: 5px;
 }
 
+
+.extractInfo {
+  /* display: flex; */
+  flex-direction: column;
+  padding: 20rpx;
+  justify-content: center;
+  transition: linear;
+  transition-duration: 0.2s;
+  border: 1px solid green;
+  box-shadow: 1px 1px 1px;
+  border-radius: 5px;
+  background-color: white;
+  position:fixed;
+  z-index:3;
+  margin:0 70rpx;
+  top:300rpx;
+  height:300rpx;
+  width: 600rpx;
+  transform-style: preserve-3d;
+  /* perspective: 1200px; */
+  z-index: -10px;
+  display: none;
+  /* transform: perspective(500px) rotateX(90deg); */
+}
+
+.openExtractInfo{
+  z-index: 100px !important;
+  display: flex;
+  /* transform: perspective(500px) rotateX(0deg); */
+}
+
+
+.nickName-a {
+  transform: translateY(0em) scale(0.5, 0.5);
+  transition: all 0.1s ease-in;
+  z-index: 5;
+  color: black;
+}
+
+.nickName-s {
+  /* transform: none; */
+  color: #999;
+  transform: translateY(1em);
+  z-index: 5;
+  transition: all 0.1s ease-in;
+}
+.weui-cell__bd:active .nickName,
+.weui-cell__bd:focus .nickName,{
+  transform: translateY(0em) scale(0.5, 0.5);
+  transition: all 0.1s ease-in;
+  z-index: 5;
+  color: black;
+  background-color: gold;
+}
+
+#txtNickName:focus{
+  background-color: gold;
+}
+#txtcustomName{
+  margin:0 50rpx;
+}
+
 .messageboard-acting {
   border: 1px solid grey;
   box-shadow: 1px 1px 1px;
@@ -235,6 +297,7 @@ image.avatar-icon-delete {
   background-color: var(--color-green);
 }
 
+
 .shake{
 animation:1s seconddiv infinite;
 background: transparent;
@@ -249,3 +312,58 @@ background: transparent;
 84% {transform: scale(1.2,1.2);}
 100% {transform: scale(1,1);}
 }
+
+
+
+
+
+
+
+
+/* ----------------------------------------- */
+.changeNameClick {
+  height: 1em;
+  padding: 0 10rpx;
+/* 
+	 box-shadow:inset 0px 1px 0px 0px #d9fbbe;
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #b8e356), color-stop(1, #a5cc52) );
+	background-color:#b8e356;
+	border:1px solid #83c41a; 
+  border-radius: 20px;
+	text-indent:0;
+	display:inline-block;
+	color:#ffffff;
+	font-family:Arial;
+	font-style:normal;
+	width:auto;
+	text-decoration:none;
+	text-align:center;
+	text-shadow:1px 1px 0px #86ae47; */
+/* 
+
+	box-shadow:inset 0px 1px 0px 0px #caefab;
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #77d42a), color-stop(1, #5cb811) );
+	background-color:#77d42a;
+	border-radius:0px;
+	text-indent:0;
+	border:1px solid #268a16; 
+  
+	color:#306108;*/
+  
+  border-radius: 5px;
+  background-color: var(--color-green);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+
+
+	display:inline-block;
+	color:var(--color-black);
+	font-family:Trebuchet MS;
+	text-decoration:none;
+	text-align:center;
+	text-shadow:1px 1px 0px #aade7c;
+}
+.changeNameClick:active {
+	position:relative;
+	top:1px;
+}
+/* This button was generated using CSSButtonGenerator.com */

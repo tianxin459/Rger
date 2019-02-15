@@ -5,10 +5,38 @@
   margin-top: 100px;
   margin-bottom: 10px;
 }
+.container-gohome{
+  margin-top: 150rpx;
+  align-self: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 140rpx;
+  height: 140rpx;
+  border: 2px solid var(--color-black);
+  /* background-color: var(--color-green); */
+  border-radius: 50%;
+  transition: ease;
+  transition-duration: 0.5s;
+}
 
+.container-gohome:active{
+  background-color: var(--color-green);
+}
+
+.container-gohome image{
+  width: 100rpx;
+  height: 100rpx;
+}
+.btnLogin{
+  border-radius:50%;
+  background-color:white;
+  display:flex;
+}
 .img-error {
   width: 80px;
   height: 80px;
+  align-self: center;
 }
 
 .pg__bd {

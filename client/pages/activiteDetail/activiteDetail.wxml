@@ -20,7 +20,7 @@
   </view>
   <view class="pg__hd">
     <view class="weui-article__h1">
-      {{activite.title}}<text class="text-expire" wx:if="{{activite.date < dateNow}}">(已过期)</text>
+      {{activite.title}}<text class="text-expire" wx:if="{{activite.date < dateNow}}">{{lang.expired}}</text>
     </view>
     <!-- menu -->
     <view class="menu" wx:if="{{menuDisplay}}">
@@ -30,12 +30,17 @@
         <text class="lines line-3{{showMenu?'-active':''}}"></text>
       </label>
       <button class="menu-item {{showMenu?'menu-item-active':''}}" open-type="share">
-        <view class="menu-text">分享</view>
+        <view class="menu-text">{{lang.menu_share}}</view>
       </button>
-      <view class="menu-item {{showMenu?'menu-item-active':''}} blue" bindtap="copyActivite">复制</view>
-      <view wx:if="{{false}}" class="menu-item {{showMenu? 'menu-item-active': ''}} blue highlight" bindtap="teamUp">分组</view>
-      <view class="menu-item {{showMenu?'menu-item-active':''}} blue" bindtap="updateActivite" wx:if="{{(userInfo.nickName==activite.Creator || isAdmin)}}">更改</view>
-      <view class="menu-item {{showMenu?'menu-item-active':''}} menu-goHome" bindtap="goToHome">主页</view>
+      <view class="menu-item {{showMenu?'menu-item-active':''}} blue" bindtap="copyActivite">{{lang.menu_copy}}</view>
+      <view wx:if="{{false}}" class="menu-item {{showMenu? 'menu-item-active': ''}} blue highlight" bindtap="teamUp">{{lang.menu_teamup}}</view>
+      <!-- 更改 -->
+      <view class="menu-item {{showMenu?'menu-item-active':''}} blue" bindtap="updateActivite" wx:if="{{(userInfo.nickName==activite.Creator || isAdmin)}}">{{lang.menu_modify}}</view>
+      <!-- email -->
+      <view class="menu-item {{showMenu?'menu-item-active':''}} blue" bindtap="openEmailDialog" wx:if="{{(userInfo.nickName==activite.Creator || isAdmin)}}">{{lang.menu_report}}</view>
+      <!-- 翻译 -->
+      <view class="menu-item {{showMenu?'menu-item-active':''}} blue" bindtap="switchLang" ><image class="img-icon-button" src="../../resources/translation.png" background-size="cover" ></image></view>
+      <view class="menu-item {{showMenu?'menu-item-active':''}} menu-goHome" bindtap="goToHome">{{lang.menu_home}}</view>
     </view>
   </view>
   <!-- Messageboard -->
@@ -43,7 +48,7 @@
     <image src="../../resources/close.png" class="btn-close" bindtap="toggleMessageBoard"></image>
 
     <view class="messageboard-bd">
-      <view class="message-head">{{messageList.length}}条消息</view>
+      <view class="message-head">{{messageList.length}} {{lang.messages}}</view>
       <view class="message" wx:for="{{messageList}}" wx:for-item="c" wx:key="RowKey">
         [{{c.creator}}]:{{c.message}}
       </view>
@@ -52,26 +57,46 @@
     <view class="messageboard-ft weui-cells">
       <input name="message" type="text" class="weui-input message-box" bindfocus="focusMessage" bindblur="blurMessage" bindinput="inputMessage" bindconfirm="submitMessage" value="{{message}}" />
       <view class="btn-send" bindtap="submitMessage">
-        发<text class="green">送</text>
+        {{lang.send1}}<text class="green">{{lang.send2}}</text>
       </view>
     </view>
   </view>
 
+  <!-- Extract Info -->
+ <view class="extractInfo {{openExtractInfo? 'openExtractInfo': ''}}">
+  <text>{{lang.customName}}:</text><input id="txtcustomName" name="customName" focus='{{customNameFocus}}' bindinput='inputCustomName'  class="weui-input" type="text" value="{{customName}}" maxlength="20" />
+        <view class="weui-btn-area btn-area-2">
+        <button id="btnExtSubmit" class="btn-half" bindtap="saveCustomName" type="primary" >{{lang.btn_confirm}}</button>
+         <button id="btnExtCancel" class="btn-half" bindtap="closeExtractInfo">{{lang.btn_cancel}}</button>
+        </view>
+  </view>
+
+  <!-- EmailDialog -->
+ <view class="extractInfo {{showEmailDialog? 'openExtractInfo': ''}}">
+ <text class='textError' wx:if="{{!!errorEmail}}">{{errorEmail}}</text>
+  <text>{{lang.sendToEmail}}:</text><input id="txtcustomEmail" name="customEmail" focus='{{customEmailFocus}}' bindinput='inputCustomEmail'  class="weui-input" type="text" value="{{customEmail}}" maxlength="90" />
+        <view class="weui-btn-area btn-area-2">
+        <button id="btnEmailExtSubmit" class="btn-half" bindtap="saveCustomEmail" type="primary" >{{lang.btn_confirm}}</button>
+         <button id="btnEmailExtCancel" class="btn-half" bindtap="closeEmailDialog">{{lang.btn_cancel}}</button>
+        </view>
+  </view>
+
+<!-- Activity Detail -->
   <view class="pg__bd">
     <view class="page__bd_spacing">
       <!-- information -->
       <view class="weui-article__section weui-media-box weui-media-box_text">
-        <view class="weui-article__p"><text class="text-h2">时间:</text> {{activite.date}} {{activite.dayOfWeek}} {{activite.time}}</view>
-        <view class="weui-article__p" wx:if="{{activite.duration}}"><text class="text-h2">时长:</text> {{activite.duration}}小时</view>
-        <view class="weui-article__p" hidden="{{!activiteLocation.title}}"><text class="text-h2">地点:</text> {{activiteLocation.title}}</view>
+        <view class="weui-article__p"><text class="text-h2">{{lang.time}}:</text> {{activite.date}} {{activite.dayOfWeek}} {{activite.time}}</view>
+        <view class="weui-article__p" wx:if="{{activite.duration}}"><text class="text-h2">{{lang.duration}}:</text> {{activite.duration}} {{lang.hour}}</view>
+        <view class="weui-article__p" hidden="{{!activiteLocation.title}}"><text class="text-h2">{{lang.location}}:</text> {{activiteLocation.title}}</view>
         <view class="weui-article__p address" hidden="{{!activiteLocation.address}}" bindtap="openMap">{{activiteLocation.address}}
           <image class="img-icon" src="../../resources/placeholder1.png" background-size="cover"></image>
         </view>
         <view class="weui-article__p text-remark">{{activite.content}}</view>
       </view>
       <!-- message -->
-      <view class="messageboard" bindtap="toggleMessageBoard">
-        <view class="text-h2 bottomLine">实时留言板:</view>
+      <view wx:if="{{!onShareStatus}}" class="messageboard" bindtap="toggleMessageBoard">
+        <view class="text-h2 bottomLine">{{lang.messageBoard}}:</view>
         <view class="message-container">
           <scroll-view scroll-y="true" scroll-into-view="x{{lastMessageRowKey}}">
             <view id="x{{c.RowKey}}" class="message" wx:for="{{messageList}}" wx:for-item="c" wx:key="RowKey">
@@ -82,8 +107,10 @@
       </view>
 
       <!-- participator -->
-      <view class=""><text class="">参加人数:</text><text class="text-h1">{{userList.length||'0'}}{{activite.peopleLimit>0?'/'+activite.peopleLimit:''}}</text></view>
-      <view class="container-item weui-media-box weui-media-box_text">
+      <view wx:if="{{!onShareStatus}}" class="">
+      <text class="">{{lang.numberOfParticipants}}:</text><text class="text-h1">{{userList.length||'0'}}{{activite.peopleLimit>0?'/'+activite.peopleLimit:''}}</text>
+      </view>
+      <view wx:if="{{!onShareStatus}}" class="container-item weui-media-box weui-media-box_text">
         <view class="icon-box__ctn item {{kickOutEnable?'shake':''}}" id='item_{{p.nickName}}' wx:for="{{userList}}" wx:for-item="p" wx:key="RowKey" hover-class="item-hover">
           <view class="noplace">
             <image class="avatar-icon-gender" wx:if="{{(p.gender==1)}}" src="../../resources/boy.png"></image>
@@ -94,7 +121,9 @@
           <view class="noplace">
           </view> -->
           <image class="avatar" src="{{p.avatarUrl}}" background-size="cover" ></image>
-          <view class="nickName">{{p.nickName}}</view>
+
+          <view wx:if="{{activite.requireEnglishName && p.nickName==userInfo.nickName}}" class="nickName changeNameClick" bindtap='changeCustomName'>{{activite.requireEnglishName?(p.customName||p.nickName):p.nickName}}</view>
+          <view wx:else class="nickName">{{activite.requireEnglishName?(p.customName||p.nickName):p.nickName}}</view>
         </view>
       </view>
     </view>
@@ -102,11 +131,15 @@
   <!-- <view class="pg__ft page__bd_spacing">  -->
   <view class="pg__ft block-footer" wx:if="{{!(activite.date < dateNow)}}">
     <view class="weui-btn-area">
-      <button id="btnSubmit" bindtap="submitActivite" type="primary" hidden="{{joinAlready||(activite.peopleLimit-userList.length<=0)}}">加入一起</button>
+        <button id="btnSubmit" bindtap="submitActivite" type="primary" hidden="{{joinAlready||(activite.peopleLimit && activite.peopleLimit-userList.length<=0)}}">{{lang.join}}</button>  
+       <!-- <button id="btnSubmit" bindtap="submitActivite" type="primary" >{{lang.join}}</button>  -->
       <!-- <button bindtap="teamUp" type="primary" wx:if="{{true}}">分组</button> -->
-      <button id="btnDelete" bindtap="quitActivite" type="warn" hidden="{{!joinAlready}}">退出活动</button>
+      <button id="btnDelete" bindtap="quitActivite" type="warn" hidden="{{!joinAlready}}">{{lang.quit}}</button>
 
-      <button id="btnKickOut" class="{{kickOutEnable?'highlight':''}}" bindtap="toggleKickOut"  wx:if="{{(userInfo.nickName==activite.Creator || isAdmin)}}">踢出人员</button>
+      <button id="btnKickOut" class="{{kickOutEnable?'highlight':''}}" bindtap="toggleKickOut"  wx:if="{{(userInfo.nickName==activite.Creator || isAdmin)}}">{{lang.kickout}}</button>
+    </view>
+    <view wx:if="{{false}}" class="weui-btn-area floating-btn-area">
+      <button wx:if="false" class='{{btnLangText}}' bindtap="switchLang"  type="primary">{{btnLangText}}</button>
     </view>
   </view>
   <view class="mask" wx:if="{{activite.date < dateNow}}">

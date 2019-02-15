@@ -8,16 +8,29 @@
     <!-- <text class="pg__title">{{msg}}</text> -->
   </view>
   <view class="pg__bd page__bd_spacing">
+<!--   
+    <view wx:if="{{errorMessage}}" class="container-error">
+      <image class="img-error" bindtap='goHome' src="../../resources/home.png"></image>
+    </view> -->
     <view class="container-error">
-      <image class="img-error" src="../../resources/warning.png"></image>
+
+      <image class="img-error" bindtap='goHome' src="../../resources/alert.png"></image>
+      <!-- <image class="img-error" src="../../resources/alert.png"></image> -->
     </view>
 
     <view wx:if="{{errorMessage}}" class="error-text">
         {{errorMessage}}
     </view>
     <view wx:else class="error-text">
-        不好意思，程序挂了T_T
+        不好意思，服务器无法连线T_T
     </view>
+
+    <view wx:if="{{errorMessage}}" class="container-gohome">
+     <button class="btnLogin" block outline type="balanced" open-type="getUserInfo" bindgetuserinfo="onGotUserInfo">
+        <image class="img-error" bindtap='goHome' src="../../resources/home.png"></image>
+      </button>
+    </view>
+
   </view>
   <view class="block-footer">
   </view>

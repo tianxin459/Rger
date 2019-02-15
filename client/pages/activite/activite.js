@@ -3,6 +3,8 @@ var app = getApp();
 var storage = require('../../utils/storage.js');
 var place = require('../../utils/place.js');
 var util = require('../../utils/util.js');
+var lang = require('../../i18n/lang.js');
+
 Page({
   /**
    * 页面的初始数据
@@ -10,6 +12,7 @@ Page({
 
   activiteId: '',
   data: {
+    lang: lang[app.globalData.lang],
     isAdminDate: false,
     isCopy: false,
     loading: true,
@@ -34,12 +37,24 @@ Page({
     contentInput: false,
     dayOfWeek: '',
     peopleLimit:'',
+    requireEnglishName:false,
+    advanceSettingDisplay:false
   },
-
+  switchLang(e) {
+    app.globalData.langSetIndex = (app.globalData.langSetIndex + 1) % 2;
+    app.globalData.lang = app.globalData.langSet[app.globalData.langSetIndex];
+    this.setData({
+      lang: lang[app.globalData.lang]
+    })
+  },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    this.setData({
+      lang: lang[app.globalData.lang]
+    });
+
     this.data.isCopy = !!options.isCopy;
     let that = this;
     //if id exists then in update status
@@ -78,10 +93,11 @@ Page({
             isUpdateFlag: true,
             id: options.id,
             loading: false,
-            dayOfWeek: util.weekDay[day],
+            dayOfWeek: this.data.lang.weekDay[day],
             titleInput: !!a.title,
             contentInput: !!a.content,
-            peopleLimit: a.peopleLimit
+            peopleLimit: a.peopleLimit,
+            requireEnglishName: a.requireEnglishName
           });
         });
     }
@@ -154,6 +170,7 @@ Page({
     let content = this.data.content;
     let duration = this.data.duration;
     let peopleLimit = this.data.peopleLimit;
+    let requireEnglishName = this.data.requireEnglishName;
     console.log('peopleLimit - '+peopleLimit);
     var url = storage.getInsertUrl();
     // console.log(url);
@@ -175,12 +192,14 @@ Page({
       "duration": duration,
       "location": JSON.stringify(this.data.location),
       "RowKey": rowKey,
-      "peopleLimit": peopleLimit
+      "peopleLimit": peopleLimit,
+      "requireEnglishName": requireEnglishName
     };
     let cb_success = resp => {
       // console.log(resp.data.value);
       wx.hideLoading();
       this.openAlert();
+      this.sendEmailReport();   
     };
     let cb_failure = e => {
       wx.hideLoading();
@@ -198,6 +217,9 @@ Page({
       storage.insertData(data,
         cb_success,
         cb_failure);
+      storage.cloudInsertDataActivity(data,
+        cb_success,
+        cb_failure);
     }
   },
   bindTimeChange(e) {
@@ -207,9 +229,10 @@ Page({
   },
   bindDateChange(e) {
     let day = (new Date(e.detail.value)).getDay();
-    this.setData({
+    let that = this;
+    that.setData({
       date: e.detail.value,
-      dayOfWeek: util.weekDay[day]
+      dayOfWeek: that.data.lang.weekDay[day]
     });
   },
   openAlert() {
@@ -350,6 +373,18 @@ Page({
       inputVal: ""
     });
   },
+  toggleAdvanceSettings(e){
+    console.log(this.data.requireEnglishName);
+    this.setData({
+      advanceSettingDisplay: !this.data.advanceSettingDisplay
+    });
+  },
+  requireEnglishNameChange(e){
+
+    this.setData({
+      requireEnglishName: (e.detail.value.length>0)
+    });
+  },
 
   //guide
   //------------------------------------------------------
@@ -361,5 +396,39 @@ Page({
   },
 
   //validateion
+
+
+  //send email
+  //---------------------------------------------------------
+  sendEmailReport(e) {
+    let cb_success = (resp) => {
+      console.log("sendEmail complete");
+    };
+    let cb_failure = (err) => { console.error(err); };
+    let url = "https://sendcloud.sohu.com/apiv2/mail/send";
+
+    let emailBody = this.data.content
+    let data = {
+      apiUser: "tianxin459",
+      apiKey: "Oni5mnpKARSexrnG",
+      from: "Together@ellist.cn",
+      to: "onlyheart@qq.com",
+      subject: "Together new Event:" +this.data.title,
+      html: emailBody
+    };
+    console.log("send email");
+
+    wx.request({
+      url: url,
+      method: 'Post',
+      header: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept': 'application/json'
+      },
+      data: data,
+      success: cb_success,
+      fail: cb_failure
+    });
+  },
 
 })

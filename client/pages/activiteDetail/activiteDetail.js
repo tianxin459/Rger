@@ -314,6 +314,7 @@ Page({
                 storage.cloudInsertUserConfig(dataUserConfig,
                     resp => {
                         app.globalData.userInfo.englishName = this.data.customName;
+                        app.globalData.userInfo._id = dataUserConfig._id;
                         console.log('cloud insert dataUserConfig', app.globalData.userInfo.englishName);
                         if (!this.data.joinAlready) {
                             this.submitActivite(e);

@@ -175,6 +175,26 @@ let cloudInsertDataUser = (data, cb_success, cb_failure) => {
     });
 }
 
+let cloudUpdateDataUser = (_id, data, cb_success, cb_failure) => {
+    if (!cb_success)
+        cb_success = resp => {
+            console.log(resp);
+        };
+    if (!cb_failure)
+        cb_failure = err => {
+            console.error(err);
+            storage.log(err);
+        };
+    console.log('cloud storage => insert User data');
+    let db = wx.cloud.database();
+    db.collection(dbNameUser).doc(_id).update({
+        data: data,
+        success: cb_success,
+        fail: cb_failure
+    });
+}
+
+
 
 let updateData = (partitionKey, rowKey, data, cb_success, cb_failure) => {
     // console.log('storage => update data');
@@ -301,6 +321,16 @@ let insertUserInfoData = (data, cb_success, cb_failure) => {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
         },
+        success: cb_success,
+        fail: cb_failure
+    });
+
+    // ---------------- cloud -------------------
+    console.log('cloud storage => insert User data');
+    let db = wx.cloud.database();
+    data._id = data.RowKey;
+    db.collection(tableUsersName).add({
+        data: data,
         success: cb_success,
         fail: cb_failure
     });
@@ -560,6 +590,25 @@ let getUserConfig = (userId, cb_success, cb_failure) => {
 }
 
 
+let cloudGetUserConfig = (userId, cb_success, cb_failure) => {
+    if (!cb_success)
+        cb_success = resp => {
+            console.log(resp);
+        };
+    if (!cb_failure)
+        cb_failure = err => {
+            console.error(err);
+        };
+    db.collection(dbName).where({
+            id: dataUserConfig.nickName
+        })
+        .get({
+            success: cb_success,
+            fail: cb_failure
+        });
+}
+
+
 let insertUserConfig = (userId, customName, cb_success, cb_failure) => {
     let filterStr = `$filter=id%20eq%20'${userId}'`;
     let url = getFilterUrl(filterStr, tableUsersName);
@@ -646,14 +695,36 @@ let cloudUpdateUserConfig = (dataUserConfig, cb_success, cb_failure) => {
         cb_failure = err => {
             console.error(err);
         };
-    console.log('cloud updateUserConfig - ', dataUserConfig);
+
+    let data = {
+        customEmail: dataUserConfig.customEmail,
+        englishName: dataUserConfig.englishName,
+        id: dataUserConfig.nickName,
+        // _id: dataUserConfig._id
+    }
+    console.log('cloud updateUserConfig - ', data);
     let db = wx.cloud.database();
-    db.collection(dbName).doc(dataUserConfig._id).update({
-        // data 传入需要局部更新的数据
-        data: dataUserConfig,
-        success: cb_success,
-        fail: cb_failure
-    });
+    db.collection(dbName).where({
+            id: dataUserConfig.nickName
+        })
+        .get({
+            success(res) {
+                if (res.data.length > 0) {
+                    db.collection(dbName).doc(res.data[0]._id).update({
+                        // data 传入需要局部更新的数据
+                        data: data,
+                        success: cb_success,
+                        fail: cb_failure
+                    });
+                } else {
+                    db.collection(dbName).add({
+                        data: data,
+                        success: cb_success,
+                        fail: cb_failure
+                    })
+                }
+            }
+        });
 }
 
 module.exports = {
@@ -681,8 +752,10 @@ module.exports = {
     cloudLoadUserList,
     cloudInsertDataActivity,
     cloudInsertDataUser,
+    cloudUpdateDataUser,
     cloudDeleteUser,
     cloudSearchUserData,
+    cloudGetUserConfig,
     cloudInsertUserConfig,
     cloudUpdateUserConfig
 }

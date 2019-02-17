@@ -6,136 +6,137 @@
   </view>
 </view> -->
 <view class="page">
-  <view class="pg__hd">
-    <text class="pg__title">{{lang.activityNew}}</text>
-     <image class="img-icon-button" src="../../resources/settings.png" background-size="cover" bindtap="toggleAdvanceSettings" ></image>
-  </view>
-  <!-- <form bindsubmit="submitActivite" class="">  -->
-  <view class="pg__bd page__bd_spacing">
-    <!-- <view class="weui-cells__title">标题</view> -->
-    <view class="fliper ts {{advanceSettingDisplay?'flip':''}}">
-      <view class="flip-front">
-        <view class="weui-cells weui-cells_form">
-          <view class="weui-cell">
-            <view class="weui-cell__bd">
-              <view class="noline">
-                <label for="txtTitle" bindtap="focusTitle">
-                  <view class="title title-{{titleInput?'a':'s'}}" >{{lang.activityTitle}}</view>
+    <view class="pg__hd">
+        <text class="pg__title">{{lang.activityNew}}</text>
+        <image class="img-icon-button" src="../../resources/settings.png" background-size="cover" bindtap="toggleAdvanceSettings"></image>
+    </view>
+    <!-- <form bindsubmit="submitActivite" class="">  -->
+    <view class="pg__bd page__bd_spacing">
+        <!-- <view class="weui-cells__title">标题</view> -->
+        <view class="fliper ts {{advanceSettingDisplay?'flip':''}}">
+            <view class="flip-front">
+                <view class="weui-cells weui-cells_form">
+                    <view class="weui-cell">
+                        <view class="weui-cell__bd">
+                            <view class="noline">
+                                <label for="txtTitle" bindtap="focusTitle">
+                  <view class="title title-{{titleInput?'a':'s'}}">{{lang.activityTitle}}</view>
                 </label>
-              </view>
-              <input id="txtTitle" name="title" bindinput="inputTitle" bindfocus="focusTitle" bindblur="blurTitle" class="weui-input {{titleFlag?'':'error'}}" type="text" value="{{title}}" maxlength="20" />
-            </view>
-          </view>
-
-          <!-- <view class="weui-cells__title">活动日期</view> -->
-          <!-- <view class="weui-cells weui-cells_form"> -->
-          <view class="weui-cell">
-            <view class="weui-cell__bd datetime">
-              {{lang.activityDate}}:
-              <picker class="" mode="date" value="{{date}}" start="2018-05-01" bindchange="bindDateChange">
-                <view class="picker">
-                  {{date||'YYYY-MM-DD'}}
-                </view>
-              </picker>
-              <text class="dayOfWeek">{{dayOfWeek}}</text>
-              <picker class="" mode="time" value="{{time}}" start="09:01" end="23:01" bindchange="bindTimeChange">
-                <view class="picker">
-                  {{time||'00:00'}}
-                </view>
-              </picker>
-            </view>
-          </view>
-          <!-- </view> -->
-
-          <!-- <view class="weui-cells__title">持续时间</view> -->
-          <!-- <view class="weui-cells weui-cells_form"> -->
-          <view class="weui-cell">
-            <view class="weui-cell__bd">
-              <view class="classname">{{lang.time}}({{lang.hour}}):</view>
-              <!-- <input name="duration" type="digit" /> -->
-              <slider name="duration" max="5" step="0.5" show-value="true" value="{{duration}}" bindchange="inputDuration" />
-            </view>
-          </view>
-          <!-- </view> -->
-
-          <!--活动地点-->
-          <!-- <view class="weui-cells weui-cells_form"> -->
-          <view class="weui-cell">
-            <view class="weui-cell__bd">
-              <view class="picker">
-                {{location.title}}
-              </view>
-              <view class="picker" hidden="{{location.address ==undefined || location.address == null}}">
-                {{lang.activityAddress}}: {{location.address}}
-              </view>
-              <view class="weui-search-bar">
-                <view class="weui-search-bar__form">
-                  <view class="weui-search-bar__box">
-                    <icon class="weui-icon-search_in-box" type="search" size="14"></icon>
-                    <input type="text" class="weui-search-bar__input" placeholder="{{lang.activitySearchAddress}}" value="{{inputVal}}" focus="{{inputShowed}}" bindinput="inputTyping" confirm-type="Search" bindconfirm="openSheet" />
-                    <view class="weui-icon-clear" wx:if="{{inputVal.length > 0}}" bindtap="clearInput">
-                      <icon type="clear" size="14"></icon>
+                            </view>
+                            <input id="txtTitle" name="title" bindinput="inputTitle" bindfocus="focusTitle" bindblur="blurTitle" class="weui-input {{titleFlag?'':'error'}}" type="text" value="{{title}}" maxlength="20" />
+                        </view>
                     </view>
-                  </view>
-                  <label class="weui-search-bar__label" hidden="{{inputShowed}}" bindtap="showInput">
-                        <icon class="weui-icon-search" type="search" size="14"></icon>
-                        <view class="weui-search-bar__text">{{lang.activitySetAddress}}</view>
-                    </label>
+
+                    <!-- <view class="weui-cells__title">活动日期</view> -->
+                    <!-- <view class="weui-cells weui-cells_form"> -->
+                    <view class="weui-cell">
+                        <view class="weui-cell__bd datetime">
+                            {{lang.activityDate}}:
+                            <picker class="" mode="date" value="{{date}}" start="2018-05-01" bindchange="bindDateChange">
+                                <view class="picker">
+                                    {{date||'YYYY-MM-DD'}}
+                                </view>
+                            </picker>
+                            <text class="dayOfWeek">{{dayOfWeek}}</text>
+                            <picker class="" mode="time" value="{{time}}" start="09:01" end="23:01" bindchange="bindTimeChange">
+                                <view class="picker">
+                                    {{time||'00:00'}}
+                                </view>
+                            </picker>
+                        </view>
+                    </view>
+                    <!-- </view> -->
+
+                    <!-- <view class="weui-cells__title">持续时间</view> -->
+                    <!-- <view class="weui-cells weui-cells_form"> -->
+                    <view class="weui-cell">
+                        <view class="weui-cell__bd">
+                            <view class="classname">{{lang.time}}({{lang.hour}}):</view>
+                            <!-- <input name="duration" type="digit" /> -->
+                            <slider name="duration" max="5" step="0.5" show-value="true" value="{{duration}}" bindchange="inputDuration" />
+                        </view>
+                    </view>
+                    <!-- </view> -->
+
+                    <!--活动地点-->
+                    <!-- <view class="weui-cells weui-cells_form"> -->
+                    <view class="weui-cell">
+                        <view class="weui-cell__bd">
+                            <view class="picker">
+                                {{location.title}}
+                            </view>
+                            <view class="picker" hidden="{{location.address ==undefined || location.address == null}}">
+                                {{lang.activityAddress}}: {{location.address}}
+                            </view>
+                            <view class="weui-search-bar">
+                                <view class="weui-search-bar__form">
+                                    <view class="weui-search-bar__box">
+                                        <icon class="weui-icon-search_in-box" type="search" size="14"></icon>
+                                        <input type="text" class="weui-search-bar__input" placeholder="{{lang.activitySearchAddress}}" value="{{inputVal}}" focus="{{inputShowed}}" bindinput="inputTyping" confirm-type="Search" bindconfirm="openSheet" />
+                                        <view class="weui-icon-clear" wx:if="{{inputVal.length > 0}}" bindtap="clearInput">
+                                            <icon type="clear" size="14"></icon>
+                                        </view>
+                                    </view>
+                                    <label class="weui-search-bar__label" hidden="{{inputShowed}}" bindtap="showInput">
+                    <icon class="weui-icon-search" type="search" size="14"></icon>
+                    <view class="weui-search-bar__text">{{lang.activitySetAddress}}</view>
+                  </label>
+                                </view>
+                                <view class="weui-search-bar__cancel-btn" hidden="{{!inputShowed || !locationName}}" bindtap="openSheet">{{lang.search}}</view>
+                            </view>
+                        </view>
+                    </view>
+                    <view class="weui-cell">
+                        <view class="weui-cell__bd textarea">
+                            <view class="noline">
+                                <label for="txtContent" bindtap="focusContent">
+                  <view id="txtContent" class="title title-{{contentInput?'a':'s'}}">{{lang.activityDesc}}</view>
+                </label>
+                            </view>
+                            <textarea name="content" bindfocus="focusContent" bindblur="blurContent" bindInput="inputContent" class="weui-textarea" maxlength="200" value="{{content}}"></textarea>
+                        </view>
+                    </view>
                 </view>
-                <view class="weui-search-bar__cancel-btn" hidden="{{!inputShowed || !locationName}}" bindtap="openSheet">{{lang.search}}</view>
-              </view>
             </view>
-          </view>
-          <view class="weui-cell">
-            <view class="weui-cell__bd textarea">
-              <view class="noline">
-                <label for="txtContent" bindtap="focusContent">
-                <view id="txtContent" class="title title-{{contentInput?'a':'s'}}">{{lang.activityDesc}}</view>
+            <!-- ------------------------------------- back side ------------------------------------- -->
+            <view class="flip-back">
+                <view class="weui-cells weui-cells_form advanceSettings">
+                    <view class="weui-cell">
+                        <view class="weui-cell__bd">
+                            <label class="text-h1">{{lang.advanceSettings}}</label>
+                        </view>
+                    </view>
+                    <view class="weui-cell">
+                        <view class="weui-cell__bd">
+                            <view class="peopleLimit">
+                                <label class="">{{lang.activityMaxJoin}}:
+                  <input type="number" class="peopleLimit__input" placeholder="{{lang.nolimit}}" value="{{peopleLimit}}"
+                    bindinput='inputPeopleLimit' confirm-type="done" />
                 </label>
-              </view>
-              <textarea name="content" bindfocus="focusContent" bindblur="blurContent" class="weui-textarea" maxlength="200" value="{{content}}"></textarea>
+                            </view>
+                        </view>
+                    </view>
+                    <view class="weui-cell">
+                        <view class="weui-cell__bd">
+                            <view class="peopleLimit">
+                                <checkbox-group bindchange="requireEnglishNameChange">
+                                    <checkbox value="true" checked="{{requireEnglishName}}" />{{lang.labelEnglishName}}
+                                </checkbox-group>
+                            </view>
+                        </view>
+                    </view>
+                </view>
             </view>
-          </view>
         </view>
-      </view>
-      <!-- ------------------------------------- back side ------------------------------------- -->
-      <view class="flip-back">
-        <view class="weui-cells weui-cells_form advanceSettings">
-        <view class="weui-cell">
-            <view class="weui-cell__bd">
-              <label class="text-h1">{{lang.advanceSettings}}</label>
-            </view>
-          </view>
-          <view class="weui-cell">
-            <view class="weui-cell__bd">
-              <view class="peopleLimit">
-                <label class="">{{lang.activityMaxJoin}}:
-                <input type="number" class="peopleLimit__input" placeholder="{{lang.nolimit}}" value="{{peopleLimit}}" bindinput='inputPeopleLimit' confirm-type="done" />
-                </label>
-              </view>
-            </view>
-          </view>
-          <view class="weui-cell">
-            <view class="weui-cell__bd">
-              <view class="peopleLimit">
-                <checkbox-group bindchange="requireEnglishNameChange">
-                  <checkbox value="true" checked="{{requireEnglishName}}"/>{{lang.labelEnglishName}}
-                </checkbox-group> 
-              </view>
-            </view>
-          </view>
+    </view>
+    <view class="block-footer">
+        <view class="weui-btn-area">
+            <button type="primary" bindtap="submitActivite">{{lang.save}}</button>
+            <button type="warn" hidden="{{!isUpdateFlag}}" bindtap="deleteActivite">{{lang.delete}}</button>
         </view>
-      </view>
+        <view class="weui-btn-area floating-btn-area">
+            <image class="img-icon-button" src="../../resources/translation2.png" background-size="cover" bindtap="switchLang"></image>
+        </view>
     </view>
-  </view>
-  <view class="block-footer">
-    <view class="weui-btn-area">
-      <button type="primary" bindtap="submitActivite">{{lang.save}}</button>
-      <button type="warn" hidden="{{!isUpdateFlag}}" bindtap="deleteActivite">{{lang.delete}}</button>
-    </view>
-    <view class="weui-btn-area floating-btn-area">
-      <image class="img-icon-button" src="../../resources/translation2.png" background-size="cover" bindtap="switchLang" ></image>
-    </view>
-  </view>
-  <!-- </form>  -->
+    <!-- </form>  -->
 </view>

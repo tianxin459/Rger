@@ -201,78 +201,78 @@ Page({
 
     loadUserList(activiteId) {
         let that = this;
-        // console.log('actId=' + activiteId);
-        // storage.loadUserList(activiteId,
-        //   resp => {
-        //     let enrolledflag = false;
-        //     let userInfo = that.data.userInfo;
-        //     for (let i of resp.data.value) {
-        //       if (i.nickName == userInfo.nickName) {
-        //         enrolledflag = true;
-        //         break;
-        //       }
-        //     }
-        //     console.log(userInfo.nickName + '|' + enrolledflag);
-        //     let userList = resp.data.value;
-        //     let updateNumberFlag = userList.length != that.data.userList.length
-        //     that.setData({
-        //       userList: userList,
-        //       joinAlready: enrolledflag,
-        //       loading: false
-        //     });
-        //     if (updateNumberFlag) {
-        //       // console.log('loadUserList=>updateNumber');
-        //       storage.updateActiviteUserNumber(that.data.activiteId, userList.length);
-        //     }
-        //   },
-        //   e => {
-        //     console.log(e);
-        //   });
-        console.log('cloudLoadUserList');
-        storage.cloudLoadUserList(activiteId,
+        console.log('actId=' + activiteId);
+        storage.loadUserList(activiteId,
             resp => {
-                console.log('resp===>', resp);
                 let enrolledflag = false;
                 let userInfo = that.data.userInfo;
-                for (let i of resp.data) {
+                for (let i of resp.data.value) {
                     if (i.nickName == userInfo.nickName) {
                         enrolledflag = true;
                         break;
                     }
                 }
                 console.log(userInfo.nickName + '|' + enrolledflag);
-                let userList = resp.data;
+                let userList = resp.data.value;
                 let updateNumberFlag = userList.length != that.data.userList.length
                 that.setData({
                     userList: userList,
                     joinAlready: enrolledflag,
                     loading: false
                 });
-                // if (updateNumberFlag) {
-                //   storage.updateActiviteUserNumber(that.data.activiteId, userList.length);
-                // }
+                if (updateNumberFlag) {
+                    // console.log('loadUserList=>updateNumber');
+                    storage.updateActiviteUserNumber(that.data.activiteId, userList.length);
+                }
             },
             e => {
                 console.log(e);
             });
+        // console.log('cloudLoadUserList');
+        // storage.cloudLoadUserList(activiteId,
+        //     resp => {
+        //         console.log('resp===>', resp);
+        //         let enrolledflag = false;
+        //         let userInfo = that.data.userInfo;
+        //         for (let i of resp.data) {
+        //             if (i.nickName == userInfo.nickName) {
+        //                 enrolledflag = true;
+        //                 break;
+        //             }
+        //         }
+        //         console.log(userInfo.nickName + '|' + enrolledflag);
+        //         let userList = resp.data;
+        //         let updateNumberFlag = userList.length != that.data.userList.length
+        //         that.setData({
+        //             userList: userList,
+        //             joinAlready: enrolledflag,
+        //             loading: false
+        //         });
+        //         // if (updateNumberFlag) {
+        //         //   storage.updateActiviteUserNumber(that.data.activiteId, userList.length);
+        //         // }
+        //     },
+        //     e => {
+        //         console.log(e);
+        //     });
     },
     quitAct(userNickname) {
         for (let i in this.data.userList) {
             if (this.data.userList[i].nickName == userNickname) {
-                // console.log(this.data.userList[i]);
-                // storage.deleteData(this.data.userList[i].PartitionKey,
-                //   this.data.userList[i].RowKey,
-                //   resp => {
-                //     this.loadUserList(this.data.activiteId);
-                //     wx.hideLoading();
-                //   });
-                console.log('user _id ===>' + i, this.data.userList[i]._id)
-                storage.cloudDeleteUser(this.data.userList[i]._id,
+                console.log(this.data.userList[i]);
+                storage.deleteData(this.data.userList[i].PartitionKey,
+                    this.data.userList[i].RowKey,
                     resp => {
                         this.loadUserList(this.data.activiteId);
-                        console.log('user deleted');
                         wx.hideLoading();
                     });
+                // console.log('user _id ===>' + i, this.data.userList[i]._id)
+                // storage.cloudDeleteUser(this.data.userList[i]._id,
+                //     resp => {
+                //         this.loadUserList(this.data.activiteId);
+                //         console.log('user deleted');
+                //         wx.hideLoading();
+                //     });
                 break;
             }
         }
@@ -311,22 +311,24 @@ Page({
                             this.submitActivite(e);
                         }
                     });
-                storage.cloudInsertUserConfig(dataUserConfig,
-                    resp => {
-                        app.globalData.userInfo.englishName = this.data.customName;
-                        app.globalData.userInfo._id = dataUserConfig._id;
-                        console.log('cloud insert dataUserConfig', app.globalData.userInfo.englishName);
-                        if (!this.data.joinAlready) {
-                            this.submitActivite(e);
-                        }
-                    });
+                // storage.cloudInsertUserConfig(dataUserConfig,
+                //     resp => {
+                //         app.globalData.userInfo.englishName = this.data.customName;
+                //         app.globalData.userInfo._id = dataUserConfig._id;
+                //         console.log('cloud insert dataUserConfig', app.globalData.userInfo.englishName);
+                //         if (!this.data.joinAlready) {
+                //             this.submitActivite(e);
+                //         }
+                //     });
             } else {
                 let updateSuccess = resp => {
                     let updateRowKey;
+                    let update_id;
                     for (let i in that.data.userList) {
                         if (that.data.userList[i].nickName == that.data.userInfo.nickName) {
                             updateRowKey = that.data.userList[i].RowKey;
                             that.data.userList[i].englishName = app.globalData.userInfo.englishName;
+                            update_id = that.data.userList[i]._id;
                             break;
                         }
                     }
@@ -340,16 +342,17 @@ Page({
                         "customName": app.globalData.userInfo.englishName
                     };
 
-                    //let updateData = (partitionKey, rowKey, data, cb_success, cb_failure)
-                    storage.updateData(data.PartitionKey, data.RowKey, data,
-                        resp => {
+                    let fn_success = resp => {
                             that.loadUserList(that.data.activiteId);
                             wx.hideLoading();
                         }
-                    );
+                        //let updateData = (partitionKey, rowKey, data, cb_success, cb_failure)
+                    storage.updateData(data.PartitionKey, data.RowKey, data, fn_success);
+                    // storage.cloudUpdateDataUser(update_id, data, fn_success);
                 };
                 app.globalData.userInfo.englishName = this.data.customName;
                 storage.updateUserConfig(app.globalData.userInfo, updateSuccess)
+                    // storage.cloudUpdateUserConfig(app.globalData.userInfo, updateSuccess)
                 return;
             }
         }
@@ -392,9 +395,11 @@ Page({
 
         if ((!!this.data.customEmail || !!this.data.customName) && (app.globalData.userInfo.customEmail != this.data.customEmail)) {
             console.log("save customEmail", this.data.customEmail);
+            let rowKey = Date.now().toString();
             let dataUserConfig = {
                 "PartitionKey": "userinfo",
-                "RowKey": Date.now().toString(),
+                "RowKey": rowKey,
+                "_id": rowKey,
                 "englishName": this.data.customName,
                 "customEmail": this.data.customEmail,
                 "id": this.data.userInfo.nickName
@@ -414,6 +419,23 @@ Page({
                 app.globalData.userInfo.customEmail = this.data.customEmail;
                 storage.updateUserConfig(app.globalData.userInfo, updateSuccess)
             }
+
+            // --------- cloud storage -------------
+            // if (!app.globalData.userInfo._id) {
+            //     console.log('insert email');
+            //     storage.cloudInsertUserConfig(dataUserConfig,
+            //         resp => {
+            //             app.globalData.userInfo.customEmail = this.data.customEmail;
+            //             console.log('dataUserConfig customEmail', app.globalData.userInfo.customEmail);
+            //         });
+            // } else {
+            //     console.log('update email');
+            //     let updateSuccess = resp => {
+            //         console.log("email update success");
+            //     };
+            //     app.globalData.userInfo.customEmail = this.data.customEmail;
+            //     storage.cloudUpdateUserConfig(app.globalData.userInfo, updateSuccess);
+            // }
         }
 
         this.sendEmailReport();
@@ -453,12 +475,12 @@ Page({
             activiteId: that.data.activiteId,
             nickName: userInfo.nickName
         };
-        storage.cloudSearchUserData(filterObj,
-            resp => {
-                if (resp.data.value == undefined || resp.data.value.length == 0) {
-                    that.enrollActivite();
-                }
-            })
+        // storage.cloudSearchUserData(filterObj,
+        //     resp => {
+        //         if (resp.data.value == undefined || resp.data.value.length == 0) {
+        //             that.enrollActivite();
+        //         }
+        //     })
     },
     enrollActivite() {
         // console.log('enroll');
@@ -498,12 +520,12 @@ Page({
                 }
             );
 
-            storage.cloudInsertDataUser(data,
-                resp => {
-                    that.loadUserList(that.data.activiteId);
-                    wx.hideLoading();
-                }
-            );
+            // storage.cloudInsertDataUser(data,
+            //     resp => {
+            //         that.loadUserList(that.data.activiteId);
+            //         wx.hideLoading();
+            //     }
+            // );
         }
     },
     quitActivite(e) {

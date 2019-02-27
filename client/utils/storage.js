@@ -2,7 +2,7 @@ let dbName = 'RgerData';
 let dbNameActivty = 'RgerActivty';
 let dbNameUser = 'RgerUser';
 let
-    token = 'sv=2016-05-31&ss=bfqt&srt=sco&sp=rwdlacup&se=2020-03-05T20:51:54Z&st=2017-06-27T12:51:54Z&spr=https&sig=8qwJvDv4i%2FVhV%2F8uYi14B6JkYo45IAfBBoBj3afL92c%3D';
+    token = 'sv=2016-05-31&ss=bfqt&srt=sco&sp=rwdlacup&se=2020-03-05T20:51:54Z&st=2017-06-27T12:51:54Z&spr=https&sig=8qwJvDv4i%2FVhV%2F8uYi14B6JkYo45IAfBBoBj3afL92c%3Det';
 let url_data = 'https://ellise.table.core.windows.net';
 let tableName = 'ettest';
 let tableConversationName = 'message';
